@@ -1,0 +1,26 @@
+# Rust build artifacts
+/target/
+/Cargo.lock
+
+# Python build artifacts (for maturin)
+/fozziejoin-py/__pycache__/
+/fozziejoin-py/target/
+/fozziejoin-py/*.so
+/fozziejoin-py/*.pyd
+/fozziejoin-py/build/
+/fozziejoin-py/dist/
+/fozziejoin-py/*.egg-info
+
+# R build artifacts (if using extendr)
+/fozziejoin-r/*.Rproj.user/
+/fozziejoin-r/*.Rhistory
+/fozziejoin-r/*.RData
+/fozziejoin-r/*.Rproj
+
+# IDE/editor files
+*.swp
+*.swo
+*.DS_Store
+.idea/
+.vscode/
+

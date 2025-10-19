@@ -16,3 +16,5 @@ pyo3 = {version = "0.25.0", features = ["extension-module"]}
 pyo3-polars = "0.24.0"
 rayon = "1.11.0"
 rustc-hash = "2.1.1"
+
+

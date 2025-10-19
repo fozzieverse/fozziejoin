@@ -40,8 +40,8 @@ impl Jaccard {
 
     pub fn fuzzy_indices(
         &self,
-        left: &Vec<String>,
-        right: &Vec<String>,
+        left: &Vec<Option<String>>,
+        right: &Vec<Option<String>>,
         max_distance: f64,
         q: usize,
     ) -> Result<Vec<(usize, usize, f64)>> {
@@ -50,6 +50,10 @@ impl Jaccard {
         let mut rhs_qgrams: FxHashMap<usize, FxHashSet<&str>> = FxHashMap::default();
 
         for (r_idx, val) in right.iter().enumerate() {
+            let val = match val {
+                Some(x) => x,
+                None => continue,
+            };
             let idx = r_idx;
             let grams = get_qgram_set(val, q);
             rhs_qgrams.insert(idx, grams.clone());
@@ -63,6 +67,10 @@ impl Jaccard {
             .par_iter()
             .enumerate()
             .filter_map(|(l_idx, val)| {
+                let val = match val {
+                    Some(x) => x,
+                    None => return None,
+                };
                 let lhs_idx = l_idx;
                 let lhs_grams = get_qgram_set(val, q);
 

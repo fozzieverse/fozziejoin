@@ -5,7 +5,7 @@ use pyo3_polars::PyDataFrame;
 
 /// Joins two DataFrames using a list of (left_idx, right_idx) pairs
 #[pyfunction]
-fn fozzie_join(
+fn string_distance_join(
     left: PyDataFrame,
     right: PyDataFrame,
     left_on: &str,
@@ -16,24 +16,28 @@ fn fozzie_join(
     let left_df: DataFrame = left.into();
     let right_df: DataFrame = right.into();
 
-    let left: Vec<String> = left_df
+    let left: Vec<Option<String>> = left_df
         .column(left_on)
         .expect("hi!")
         .as_series()
         .expect("ruhroh")
-        .clone()
         .iter()
-        .map(|x| x.to_string())
+        .map(|x| match x.is_null() {
+            true => None,
+            false => Some(x.to_string()),
+        })
         .collect();
 
-    let right: Vec<String> = right_df
+    let right: Vec<Option<String>> = right_df
         .column(right_on)
         .expect("hi!")
         .as_series()
         .expect("ruhroh")
-        .clone()
         .iter()
-        .map(|x| x.to_string())
+        .map(|x| match x.is_null() {
+            true => None,
+            false => Some(x.to_string()),
+        })
         .collect();
 
     let idxs = Jaccard
@@ -59,7 +63,7 @@ fn fozzie_join(
 }
 
 #[pymodule]
-fn fozzie(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(fozzie_join, m)?)?;
+fn fozziejoin(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(string_distance_join, m)?)?;
     Ok(())
 }

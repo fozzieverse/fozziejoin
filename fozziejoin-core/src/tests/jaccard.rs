@@ -6,8 +6,8 @@ mod tests {
     #[test]
     fn test_basic_match() -> Result<()> {
         let jaccard = Jaccard::new();
-        let left = vec!["apple".to_string()];
-        let right = vec!["apples".to_string()];
+        let left = vec![Some("apple".to_string())];
+        let right = vec![Some("apples".to_string())];
         let matches = jaccard.fuzzy_indices(&left, &right, 0.5, 2)?;
 
         assert_eq!(matches.len(), 1);
@@ -21,8 +21,8 @@ mod tests {
     #[test]
     fn test_no_match_due_to_distance() -> Result<()> {
         let jaccard = Jaccard::new();
-        let left = vec!["apple".to_string()];
-        let right = vec!["banana".to_string()];
+        let left = vec![Some("apple".to_string())];
+        let right = vec![Some("banana".to_string())];
         let matches = jaccard.fuzzy_indices(&left, &right, 0.2, 2)?;
 
         assert!(matches.is_empty());
@@ -32,8 +32,8 @@ mod tests {
     #[test]
     fn test_multiple_matches() -> Result<()> {
         let jaccard = Jaccard::new();
-        let left = vec!["apple".to_string(), "banana".to_string()];
-        let right = vec!["apples".to_string(), "bananas".to_string()];
+        let left = vec![Some("apple".to_string()), Some("banana".to_string())];
+        let right = vec![Some("apples".to_string()), Some("bananas".to_string())];
         let matches = jaccard.fuzzy_indices(&left, &right, 0.5, 2)?;
 
         assert_eq!(matches.len(), 2);
@@ -43,8 +43,8 @@ mod tests {
     #[test]
     fn test_qgram_effect() -> Result<()> {
         let jaccard = Jaccard::new();
-        let left = vec!["abcdef".to_string()];
-        let right = vec!["abcxyz".to_string()];
+        let left = vec![Some("abcdef".to_string())];
+        let right = vec![Some("abcxyz".to_string())];
         let matches_q2 = jaccard.fuzzy_indices(&left, &right, 0.8, 2)?;
         assert_eq!(matches_q2.len(), 1);
         let matches_q3 = jaccard.fuzzy_indices(&left, &right, 0.8, 3)?;
@@ -55,8 +55,8 @@ mod tests {
     #[test]
     fn test_small_str() -> Result<()> {
         let jaccard = Jaccard::new();
-        let left = vec!["ab".to_string()];
-        let right = vec!["ab".to_string()];
+        let left = vec![Some("ab".to_string())];
+        let right = vec![Some("ab".to_string())];
         let matches_q3 = jaccard.fuzzy_indices(&left, &right, 0.8, 3)?;
         assert_eq!(matches_q3.len(), 0);
         Ok(())

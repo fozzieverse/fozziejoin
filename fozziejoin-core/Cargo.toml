@@ -10,5 +10,7 @@ crate-type = ["lib"]
 
 [dependencies]
 anyhow = "1.0.100"
+log = "0.4.28"
+polars = "0.51.0"
 rayon = "1.11.0"
 rustc-hash = "2.1.1"

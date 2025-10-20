@@ -14,8 +14,10 @@ def test_string_jaccard_join():
 
     joined = fozziejoin.string_distance_join(
         left, right,
-        left_on='ARTS_FULL_NAME',
-        right_on='CHILD_FULL_NAME',
+        left_on=['ARTS_FULL_NAME'],
+        right_on=['CHILD_FULL_NAME'],
+        how='inner',
+        method='jaccard',
         max_distance=0.9,
         q=3
     )
@@ -42,8 +44,10 @@ def test_string_jaccard_join_with_null():
 
     joined = fozziejoin.string_distance_join(
         left, right,
-        left_on='ARTS_FULL_NAME',
-        right_on='CHILD_FULL_NAME',
+        left_on=['ARTS_FULL_NAME'],
+        right_on=['CHILD_FULL_NAME'],
+        how='inner',
+        method='jaccard',
         max_distance=0.9,
         q=3
     )
@@ -58,4 +62,38 @@ def test_string_jaccard_join_with_null():
     expected_names = {"JOHN SMITH", "JACK DOE"}
     assert set(joined["ARTS_FULL_NAME"].to_list()) <= expected_names
     assert len(joined) > 0
+
+def test_column_name_collision_suffix():
+    """Shared column names should be renamed with the suffix on the RHS"""
+    left = pl.DataFrame({
+        "id": [1, 2],
+        "name": ["ALICE", "BOB"]
+    })
+    right = pl.DataFrame({
+        "id": [2, 3],
+        "name": ["BOBBY", "CHARLIE"]
+    })
+
+    joined = fozziejoin.string_distance_join(
+        left, right,
+        on=["name"],
+        how="inner",
+        method="jaccard",
+        max_distance=0.9,
+        q=3,
+        suffix="_right"
+    )
+
+    # Assert that the result is a DataFrame
+    assert isinstance(joined, pl.DataFrame)
+
+    # DFs have shared columns: assert suffixes have been applied properly
+    assert "name" in joined.columns
+    assert "name_right" in joined.columns
+    assert "id" in joined.columns
+    assert "id_right" in joined.columns
+
+    # Assert that "name_right" contains RHS values
+    rhs_values = joined["name_right"].to_list()
+    assert all(val in ["BOBBY", "CHARLIE"] for val in rhs_values)
 

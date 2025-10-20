@@ -16,6 +16,9 @@ dependencies = [
     "pyarrow>=21.0.0",
 ]
 
+[package.metadata.maturin]
+name = "fozziejoin"
+
 [tool.maturin]
 features = ["pyo3/extension-module"]
 

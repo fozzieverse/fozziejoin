@@ -3,11 +3,11 @@
 // License: MIT
 
 use anyhow::Result;
+use log::warn;
 use rayon::prelude::*;
 use rustc_hash::{FxHashMap, FxHashSet};
 use std::collections::VecDeque;
 
-// Cosine Distance Implementation
 pub struct Jaccard;
 
 fn get_qgram_set(s: &str, q: usize) -> FxHashSet<&str> {
@@ -34,85 +34,103 @@ fn get_qgram_set(s: &str, q: usize) -> FxHashSet<&str> {
 }
 
 impl Jaccard {
-    pub fn new() -> Self {
-        Jaccard {}
-    }
-
     pub fn fuzzy_indices(
         &self,
         left: &Vec<Option<String>>,
         right: &Vec<Option<String>>,
-        max_distance: f64,
-        q: usize,
+        max_distance: &f64,
+        q: &Option<usize>,
+        prefix_weight: Option<f64>,
+        max_prefix: Option<usize>,
+        pool: &rayon::ThreadPool,
     ) -> Result<Vec<(usize, usize, f64)>> {
+        // Check for invalid arguments supplied by user
+        if max_prefix.is_some() || prefix_weight.is_some() {
+            warn!(
+                "Warning: `max_prefix` and/or `prefix_weight` are set but ignored by this method."
+            );
+        }
+
+        // Extract q
+        let q = match q {
+            Some(x) => x,
+            None => {
+                return Err(anyhow::anyhow!(
+                    "Argument 'q' must be supplied for Jaccard distance"
+                ))
+            }
+        };
+
         // Build RHS q-gram reverse index
         let mut rhs_qgram_index: FxHashMap<&str, Vec<usize>> = FxHashMap::default();
         let mut rhs_qgrams: FxHashMap<usize, FxHashSet<&str>> = FxHashMap::default();
 
         for (r_idx, val) in right.iter().enumerate() {
-            let val = match val {
+            let val2 = match val {
                 Some(x) => x,
                 None => continue,
             };
             let idx = r_idx;
-            let grams = get_qgram_set(val, q);
+            let grams = get_qgram_set(val2, *q);
             rhs_qgrams.insert(idx, grams.clone());
             for gram in grams {
                 rhs_qgram_index.entry(gram).or_default().push(idx);
             }
         }
 
-        // Match LHS records to RHS candidates via shared q-grams
-        let results = left
-            .par_iter()
-            .enumerate()
-            .filter_map(|(l_idx, val)| {
-                let val = match val {
-                    Some(x) => x,
-                    None => return None,
-                };
-                let lhs_idx = l_idx;
-                let lhs_grams = get_qgram_set(val, q);
+        let results = pool.install(|| {
+            left.par_iter()
+                .enumerate()
+                .filter_map(|(l_idx, val)| {
+                    let val2 = match val {
+                        Some(x) => x,
+                        None => return None,
+                    };
+                    let lhs_idx = l_idx;
+                    let lhs_grams = get_qgram_set(val2, *q);
 
-                // Collect RHS candidates that share at least one q-gram
-                let mut candidates = FxHashSet::default();
-                for gram in &lhs_grams {
-                    if let Some(rhs_idxs) = rhs_qgram_index.get(gram) {
-                        candidates.extend(rhs_idxs);
-                    }
-                }
-
-                if candidates.is_empty() {
-                    return None;
-                }
-
-                // Compare Jaccard distance for each candidate
-                let mut matches = Vec::new();
-                for &rhs_idx in &candidates {
-                    let rhs_grams = &rhs_qgrams[&rhs_idx];
-
-                    // Predict best-case similarity
-                    let max_intersection = lhs_grams.len().min(rhs_grams.len());
-                    let min_union = lhs_grams.len().max(rhs_grams.len());
-                    let min_possible_distance = 1.0 - (max_intersection as f64 / min_union as f64);
-
-                    if min_possible_distance > max_distance {
-                        continue; // Skip: can't possibly be close enough
+                    // Collect RHS candidates that share at least one q-gram
+                    let mut candidates = FxHashSet::default();
+                    for gram in &lhs_grams {
+                        if let Some(rhs_idxs) = rhs_qgram_index.get(gram) {
+                            candidates.extend(rhs_idxs);
+                        }
                     }
 
-                    // Proceed with actual Jaccard distance
-                    let intersection = lhs_grams.intersection(rhs_grams).count();
-                    let union = lhs_grams.union(rhs_grams).count();
-                    let dist = 1.0 - (intersection as f64 / union as f64);
-
-                    if dist <= max_distance {
-                        matches.push((lhs_idx, rhs_idx, dist));
+                    // If no candidates, stop early
+                    if candidates.is_empty() {
+                        return None;
                     }
-                }
-                Some(matches)
-            })
-            .flatten()
-            .collect();
+
+                    // Compare Jaccard distance for each candidate
+                    let mut matches = Vec::new();
+                    for &rhs_idx in &candidates {
+                        let rhs_grams = &rhs_qgrams[&rhs_idx];
+
+                        // Predict best-case similarity
+                        let max_intersection = lhs_grams.len().min(rhs_grams.len());
+                        let min_union = lhs_grams.len().max(rhs_grams.len());
+                        let min_possible_distance =
+                            1.0 - (max_intersection as f64 / min_union as f64);
+
+                        if min_possible_distance > *max_distance {
+                            continue; // Skip: can't possibly be close enough
+                        }
+
+                        // Proceed with actual Jaccard distance
+                        let intersection = lhs_grams.intersection(rhs_grams).count();
+                        let union = lhs_grams.union(rhs_grams).count();
+                        let dist = 1.0 - (intersection as f64 / union as f64);
+
+                        if dist <= *max_distance {
+                            matches.push((lhs_idx, rhs_idx, dist));
+                        }
+                    }
+                    Some(matches)
+                })
+                .flatten()
+                .collect()
+        });
 
         Ok(results)
     }

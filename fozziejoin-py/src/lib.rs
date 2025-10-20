@@ -1,69 +1,49 @@
-use fozziejoin_core::stringdist::Jaccard;
+use fozziejoin_core::stringdist::string_distance_join_polars;
 use polars::prelude::*;
 use pyo3::prelude::*;
 use pyo3_polars::PyDataFrame;
 
-/// Joins two DataFrames using a list of (left_idx, right_idx) pairs
 #[pyfunction]
-fn string_distance_join(
+fn string_distance_join_rs(
     left: PyDataFrame,
     right: PyDataFrame,
-    left_on: &str,
-    right_on: &str,
+    left_on: Vec<String>,
+    right_on: Vec<String>,
+    how: String,
+    method: String,
     max_distance: f64,
-    q: usize,
+    q: Option<usize>,
+    prefix_weight: Option<f64>,
+    max_prefix: Option<usize>,
+    distance_col: Option<String>,
+    suffix: String,
+    nthread: Option<usize>,
 ) -> PyResult<PyDataFrame> {
     let left_df: DataFrame = left.into();
     let right_df: DataFrame = right.into();
 
-    let left: Vec<Option<String>> = left_df
-        .column(left_on)
-        .expect("hi!")
-        .as_series()
-        .expect("ruhroh")
-        .iter()
-        .map(|x| match x.is_null() {
-            true => None,
-            false => Some(x.to_string()),
-        })
-        .collect();
+    let out = string_distance_join_polars(
+        left_df,
+        right_df,
+        left_on,
+        right_on,
+        how,
+        method,
+        max_distance,
+        q,
+        prefix_weight,
+        max_prefix,
+        distance_col,
+        suffix,
+        nthread,
+    )
+    .map_err(|e| PyErr::new::<pyo3::exceptions::PyValueError, _>(e.to_string()))?;
 
-    let right: Vec<Option<String>> = right_df
-        .column(right_on)
-        .expect("hi!")
-        .as_series()
-        .expect("ruhroh")
-        .iter()
-        .map(|x| match x.is_null() {
-            true => None,
-            false => Some(x.to_string()),
-        })
-        .collect();
-
-    let idxs = Jaccard
-        .fuzzy_indices(&left, &right, max_distance, q)
-        .expect("hi!");
-    let idxlen = idxs.iter().len();
-
-    let mut left_idxs: Vec<u32> = Vec::with_capacity(idxlen);
-    let mut right_idxs: Vec<u32> = Vec::with_capacity(idxlen);
-
-    idxs.iter().for_each(|(a, b, _)| {
-        left_idxs.push(*a as u32);
-        right_idxs.push(*b as u32);
-    });
-    let left_idxs2 = UInt32Chunked::from_slice("idx".into(), &left_idxs);
-    let right_idxs2 = UInt32Chunked::from_slice("idx".into(), &right_idxs);
-
-    let left_out = left_df.take(&left_idxs2).expect("lul");
-    let right_out = right_df.take(&right_idxs2).expect("lul2");
-
-    let joined = left_out.hstack(&right_out.get_columns()).expect("hi!");
-    Ok(PyDataFrame(joined))
+    Ok(PyDataFrame(out))
 }
 
 #[pymodule]
 fn fozziejoin(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(string_distance_join, m)?)?;
+    m.add_function(wrap_pyfunction!(string_distance_join_rs, m)?)?;
     Ok(())
 }

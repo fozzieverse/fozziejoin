@@ -37,3 +37,18 @@ where
         (a, b, c)
     }
 }
+
+pub fn format_distance_labels(
+    distance_col: &str,
+    left: &Vec<String>,
+    right: &Vec<String>,
+) -> Vec<String> {
+    if left.len() == 1 && right.len() == 1 {
+        vec![distance_col.to_string()]
+    } else {
+        left.iter()
+            .zip(right.iter())
+            .map(|(l, r)| format!("{}_{}_{}", distance_col, l, r))
+            .collect()
+    }
+}

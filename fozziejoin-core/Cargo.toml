@@ -10,6 +10,7 @@ crate-type = ["lib"]
 
 [dependencies]
 anyhow = "1.0.100"
+itertools = "0.14.0"
 log = "0.4.28"
 polars = "0.51.0"
 rayon = "1.11.0"

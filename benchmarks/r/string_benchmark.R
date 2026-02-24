@@ -106,6 +106,6 @@ clean_df <- tibble(wide_df[order(wide_df$method), keep_cols])
 cat("\nTiming summary with ratios (fuzzy / fozzie):\n")
 print(clean_df)
 
-write.csv(results, "outputs/latest_string_benchmark.csv", row.names = FALSE)
+write.csv(results, "benchmarks/results/rbase_string_benchmark.csv", row.names = FALSE)
 q("no")
 

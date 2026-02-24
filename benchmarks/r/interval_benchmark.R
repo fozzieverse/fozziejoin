@@ -89,6 +89,6 @@ clean_df <- tibble(
 cat("\n⏱️ Timing summary with ratios (fuzzy / fozzie):\n")
 print(clean_df)
 
-write.csv(results, "outputs/latest_interval_benchmark.csv", row.names = FALSE)
+write.csv(results, "benchmarks/results/rbase_interval_benchmark.csv", row.names = FALSE)
 q("no")
 

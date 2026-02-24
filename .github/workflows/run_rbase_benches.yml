@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - 'update_workflows' 
+      - 'main' 
 jobs:
   benchmark:
     runs-on: ubuntu-latest

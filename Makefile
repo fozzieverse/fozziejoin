@@ -11,3 +11,6 @@ develop-release-py:
 
 bench-py:
 	make -C benchmarks/python benchmark
+
+plotbench-rbase:
+	make -C benchmarks/r plotbench

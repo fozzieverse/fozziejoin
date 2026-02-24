@@ -191,13 +191,12 @@ fozzie <- fozzie_string_join(
 
 ## Benchmarks
 
-Select benchmark comparisons are below. See [the scripts subfolder](./scripts/)
-and the [./.github/workflows/run_all_benches.yml](GitHub Actions Workflow)
-for the benchmarking implementation. More detailed methods will be
-added later via an R vignette. Linux users will observe the largest
-performance gains, presumably due to the relative efficiency of parallelization
-via `rayon`.
-
+Select benchmark comparisons are below. See [the benchmarks directory](../benchmarks/)
+for the scripts ('r' subfolder) and results ('results' subfolder).
+For reproducibility, benchmarks are made using a GitHub workflow: see
+[../.github/workflows/run_rbase_benches.yml](GitHub Actions Workflow)
+for the workflow spec. Linux users will observe the largest performance gains,
+presumably due to the relative efficiency of parallelization via `rayon`.
 
 [![Fozziejoin vs. fuzzyjoin runtime on select join methods](https://raw.githubusercontent.com/JonDDowns/fozziejoin/refs/heads/main/outputs/fozzie_bench_plot.png)](https://raw.githubusercontent.com/JonDDowns/fozziejoin/refs/heads/main/outputs/fozzie_bench_plot.png)
 

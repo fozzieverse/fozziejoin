@@ -6,39 +6,51 @@ library(tibble)
 sizes <- c(1000, 5000, 10000)
 seed <- 1337
 
-results <- data.frame()
+results <- tibble()
 
 for (size in sizes) {
   cat(sprintf("Running with size %d (%.2f million comparisons)\n", size, round(size^2 / 1e6, 2)))
   set.seed(seed)
 
-  df1 <- tibble::tibble(x = runif(size, min = 0, max = 500))
-  df2 <- tibble::tibble(x = runif(size, min = 0, max = 500))
+  df1 <- tibble(
+    x = round(runif(size, min = 0, max = 100), 2),
+    y = round(runif(size, min = 0, max = 100), 2)
+  )
+  df2 <- tibble(
+    x = round(runif(size, min = 0, max = 100), 2),
+    y = round(runif(size, min = 0, max = 100), 2)
+  )
+
+  match_cols <- c("x", "y")
 
   bench <- microbenchmark(
-    fuzzy = fuzzy <- difference_join(
+    fuzzy = fuzzy <- distance_join(
       df1, df2,
-      mode = "inner", max_dist = 1, by = "x"
+      method = "manhattan",
+      mode = "inner",
+      max_dist = 1,
+      by = match_cols,
+      distance_col = "dist"
     ),
-    fozzie = fozzie <- fozzie_difference_join(
+    fozzie = fozzie <- fozzie_distance_join(
       df1, df2,
-      how = "inner", max_distance = 1, by = "x"
+      method = "manhattan",
+      how = "inner",
+      max_distance = 1,
+      by = match_cols,
+      distance_col = "dist"
     ),
     times = 10
   )
 
-  # Order results before comparison
-  fuzzy <- fuzzy[do.call(order, as.data.frame(fuzzy)), ]
-  fozzie <- fozzie[do.call(order, as.data.frame(fozzie)), ]
-
-  if (!isTRUE(all.equal(fuzzy, fozzie))) {
+  if (!isTRUE(all.equal(as.data.frame(fuzzy), as.data.frame(fozzie)))) {
     message("Mismatch detected at size: ", size)
     print(nrow(fuzzy))
     print(nrow(fozzie))
   }
 
-  bench <- data.frame(bench)
-  bench$method <- "difference"
+  bench <- as_tibble(bench)
+  bench$method <- "distance"
   bench$n_comps <- size ^ 2
   bench$os <- Sys.info()["sysname"]
 
@@ -53,7 +65,7 @@ summary_stats <- aggregate(
 )
 
 # Convert matrix columns to separate columns
-summary_df <- data.frame(
+summary_df <- tibble(
   expr = summary_stats$expr,
   method = summary_stats$method,
   n_comps = summary_stats$n_comps,
@@ -62,23 +74,26 @@ summary_df <- data.frame(
 
 # Reshape to wide format for ratio calculation
 wide_df <- reshape(
-  summary_df,
+  as.data.frame(summary_df),
   idvar = "n_comps",
   timevar = "expr",
   direction = "wide"
 )
 
-# Add ratio column: fuzzy / fozzie
+# Add ratio columns: fuzzy / fozzie
 wide_df$mean_ratio <- wide_df$mean_time.fuzzy / wide_df$mean_time.fozzie
 
 # Select and reorder columns for clean output
-clean_df <- tibble(wide_df[, c("n_comps", "mean_time.fuzzy", "mean_time.fozzie",
-                        "mean_ratio")])
+clean_df <- tibble(
+  n_comps = wide_df$n_comps,
+  mean_time_fuzzy = wide_df$mean_time.fuzzy,
+  mean_time_fozzie = wide_df$mean_time.fozzie,
+  mean_ratio = wide_df$mean_ratio,
+)
 
-# Print cleaned summary
-cat("\nDifference timing summary with ratios (fuzzy / fozzie):\n")
+cat("\nDistance timing summary with ratios (fuzzy / fozzie):\n")
 print(clean_df)
 
-write.csv(results, "outputs/latest_difference_benchmark.csv", row.names = FALSE)
+write.csv(results, "benchmarks/results/rbase_distance_benchmark.csv", row.names = FALSE)
 q("no")
 

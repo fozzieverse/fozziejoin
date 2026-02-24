@@ -17,9 +17,9 @@ A picture of Fozzie will appear in the repo once the legal team gets braver.
 
 ## Roadmap
 
-- [ ] `fozziejoin` for base R accepted to CRAN (see `./fozziejoin-r`)
+- [ ] `fozziejoin` for base R accepted to CRAN (see [./fozziejoin-r](./fozziejoin-r))
 - [ ] `fozziejoin` for Python/polars (see [fozziejoin-py](./fozziejoin-py))
-- [ ] `fozziejoinpl` for polars R dataframes (see [fozziejoin-rpl](./fozziejoin-rpl))
+- [ ] `fozziejoinpl` for polars R dataframes (not yer initialized)
 
 ## Acknowledgements
 

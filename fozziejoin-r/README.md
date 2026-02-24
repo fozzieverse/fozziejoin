@@ -198,7 +198,7 @@ For reproducibility, benchmarks are made using a GitHub workflow: see
 for the workflow spec. Linux users will observe the largest performance gains,
 presumably due to the relative efficiency of parallelization via `rayon`.
 
-[![Fozziejoin vs. fuzzyjoin runtime on select join methods](https://raw.githubusercontent.com/JonDDowns/fozziejoin/refs/heads/main/outputs/fozzie_bench_plot.png)](https://raw.githubusercontent.com/JonDDowns/fozziejoin/refs/heads/main/outputs/fozzie_bench_plot.png)
+[![Fozziejoin vs. fuzzyjoin runtime on select join methods](https://raw.githubusercontent.com/fozzieverse/fozziejoin/fec7f14a33b3aa1c9ffbc9e9f8898cdfe4492eb8/benchmarks/results/rbase_bench_plot.png)](https://raw.githubusercontent.com/fozzieverse/fozziejoin/fec7f14a33b3aa1c9ffbc9e9f8898cdfe4492eb8/benchmarks/results/rbase_bench_plot.png)
 
 ## Known behavior changes relative to `fuzzyjoin`
 
@@ -227,26 +227,3 @@ address.
 - `soundex` implementations differ slightly.
     - Our implementation considers multiple encodings in the case of prefixes prefixes, as is specified in the [National Archives Standard](https://www.archives.gov/research/census/soundex).
     - How consecutive similar letters and consonant separators behave is implemented differently. "Coca Cola" would match to "cuckoo" only in our system, while "overshaddowed" and "overwrought" would only match in theirs.
-
-## Acknowledgements
-
-- The `extendr` team. This project would not be possible without their great project.
-- The `fuzzyjoin` package. Much of the project is meant to replicate their APIs and special cases handling.
-- `stringdist` was used as a source of truth when developing string distance algorithms. `stringdist` is insanely performant.
-- The `textdistance` Rust crate is used in many algorithms, and their implementation was referenced to adapt custom string distance algorithms for this project. Such instances are explicitly acknowledged in the source code.
-- The `rapidfuzz` Rust crate. When available, we tend to use `rapidfuzz` string distance algorithms due to its stellar performance.
-- The `rayon` Rust crate, which enables efficient parallel data processing.
-
-## Contributions Welcome
-
-We welcome contributions of all kinds- whether it's improving documentation,
-reporting issues, or submitting pull requests. Your input helps make this 
-project better for everyone.
-
-This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). By
-participating, you agree to uphold its standards of respectful and inclusive
-behavior.
-
-If you experience or witness any problematic behavior, please [contact me via
-GitHub](https://github.com/JonDDowns) or at the email listed in the DESCRIPTION
-file.

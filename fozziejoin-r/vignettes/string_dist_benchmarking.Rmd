@@ -28,9 +28,9 @@ return types, and performance characteristics.
 
 For comprehensive benchmarking methods and results, please refer to:
 
-📂 [Benchmarking Scripts](https://github.com/JonDDowns/fozziejoin/tree/main/scripts)  
-📊 [Benchmarking Outputs](https://github.com/JonDDowns/fozziejoin/tree/main/outputs)  
-🔁 [Reproducible GitHub Workflow](https://github.com/JonDDowns/fozziejoin/blob/main/.github/workflows/run_all_benches.yml)
+📂 [Benchmarking Scripts](https://github.com/fozzieverse/fozziejoin/tree/main/benchmarks/r)
+📊 [Benchmarking Outputs](https://github.com/fozzieverse/fozziejoin/tree/main/benchmarks/results)
+🔁 [Reproducible GitHub Workflow](https://github.com/fozzieverse/fozziejoin/blob/main/.github/workflows/run_rbase_benches.yml)
 
 ---
 

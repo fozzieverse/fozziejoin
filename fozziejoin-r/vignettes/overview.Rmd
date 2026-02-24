@@ -226,7 +226,7 @@ result <- fozzie_temporal_inner_join(
 )
 ```
 
-`fozzie_temporal_join` uses `interval_mode='real'` in all cases.
+`fozzie_temporal_interval_join` uses `interval_mode='real'` in all cases.
 
 ```{r}
 df1 <- data.frame(

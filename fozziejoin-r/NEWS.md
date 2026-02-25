@@ -1,3 +1,8 @@
+# fozziejoin 0.0.12
+
+- Enhanced the testing suite for multithreading validation. The testing suite is configured to use, at most, 2 threads. To ensure this is honored, we check that the user space time is less than or equal to 2.5 times the wall clock time. However, when datasets become very small, these tests can fail sporadically. Tests have been updated to use larger datasets for better reliability.
+- Updated the DESCRIPTION file to remove direct references to `tibbles` in the Description field to be more generic and formal.
+
 # fozziejoin 0.0.11
 
 - Converted relative hyperlinks in the README file to absolute hyperlinks

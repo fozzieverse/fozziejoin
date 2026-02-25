@@ -1,13 +1,12 @@
 Package: fozziejoin
 Title: Utilities for Joining Dataframes with Inexact Matching
-Version: 0.0.11
+Version: 0.0.12
 Authors@R: c(
     person("Jon", "Downs", , "jon@jondowns.net", role = c("aut", "cre")),
     person("The authors of the dependency Rust crates", role = c("ctb", "cph"),
            comment = "see inst/AUTHORS file for details")
   )
-Description: Join dataframes and tibbles by inexact criteria, such as
-    numeric difference and string distance.
+Description: Join data frames by inexact criteria, such as numeric difference and string distance.
 License: MIT + file LICENSE
 Depends: 
     R (>= 4.2)

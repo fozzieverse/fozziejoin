@@ -23,7 +23,7 @@ test-rbase:
 build-rbase:
 	R CMD build ./fozziejoin-r
 
-check-builds-rbase:
+check-osbuilds-rbase:
 	Rscript -e "devtools::check_win_devel('./fozziejoin-r')"
 	Rscript -e "devtools::check_win_release('./fozziejoin-r')"
 	Rscript -e "devtools::check_mac_release('./fozziejoin-r')"

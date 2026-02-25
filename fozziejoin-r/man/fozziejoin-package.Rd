@@ -4,9 +4,17 @@
 \name{fozziejoin-package}
 \alias{fozziejoin}
 \alias{fozziejoin-package}
-\title{fozziejoin: Performant Data Frame Joins with Inexact String Matching}
+\title{fozziejoin: Utilities for Joining Dataframes with Inexact Matching}
 \description{
 Join dataframes and tibbles by inexact criteria, such as numeric difference and string distance.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/fozzieverse/fozziejoin}
+  \item Report bugs at \url{https://github.com/fozzieverse/fozziejoin/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Jon Downs \email{jon@jondowns.net}

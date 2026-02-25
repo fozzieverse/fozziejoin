@@ -169,13 +169,6 @@ License: MIT OR Apache-2.0
 
 ------------------------------
 
-Name:    textdistance
-Files:   vendor/textdistance/*
-Authors: Gram, AKA Orsinium
-License: MIT OR Apache-2.0
-
-------------------------------
-
 Name:    unicode-ident
 Files:   vendor/unicode-ident/*
 Authors: David Tolnay

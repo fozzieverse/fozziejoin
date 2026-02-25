@@ -107,11 +107,10 @@ testthat::test_that("Left multi-column joins work across methods", {
   )
   for (method in names(test_cases)) {
     case <- test_cases[[method]]
-    actual <- fozzie_string_join(
+    actual <- fozzie_string_left_join(
       left, right,
       by = list("Name" = "Name", "Pet" = "Pet"),
       method = method,
-      how = "left",
       max_distance = case$max_distance,
       distance_col = "mydist",
       q = case$q %||% NULL,

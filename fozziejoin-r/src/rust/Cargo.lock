@@ -96,7 +96,6 @@ dependencies = [
  "rayon",
  "regex",
  "rustc-hash",
- "textdistance",
 ]
 
 [[package]]
@@ -239,12 +238,6 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
-
-[[package]]
-name = "textdistance"
-version = "1.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa672c55ab69f787dbc9126cc387dbe57fdd595f585e4524cf89018fa44ab819"
 
 [[package]]
 name = "unicode-ident"

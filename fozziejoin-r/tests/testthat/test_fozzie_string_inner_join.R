@@ -330,12 +330,9 @@ testthat::test_that("Multi column joins work", {
   testthat::expect_true(all.equal(actual, expected))
 })
 
-testthat::test_that("nthread argument works for unnormalized edit distances", {
-  # The runtime is so small that false positives will pop up.
-  # Need to artificially inflate the test DF size.
-
-  unnorm_methods <- c("hamming", "osa", "dl", "lcs", "lv")
-  for (method in unnorm_methods) {
+edit_methods <- c("hamming", "osa", "dl", "lcs", "lv", "jw")
+for (method in edit_methods) {
+  testthat::test_that(sprintf("nthread argument works for %s", method), {
     runtime <- system.time(fozzie_string_join(
       do.call(rbind, replicate(10, test_df, simplify = FALSE)),
       whoops,
@@ -345,42 +342,21 @@ testthat::test_that("nthread argument works for unnormalized edit distances", {
       nthread = 2
     ))
     testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
-  }
-})
+  })
+}
 
-testthat::test_that("nthread argument works for normalized edit distances", {
-  # The runtime is so small that false positives will pop up.
-  # Need to artificially inflate the test DF size.
-
-  norm_methods <- c("jw")
-  for (method in norm_methods) {
-    runtime <- system.time(fozzie_string_join(
-      do.call(rbind, replicate(10, test_df, simplify = FALSE)),
-      whoops,
-      by = c('Name'),
-      method = method,
-      max_distance = 1,
-      nthread = 2
-    ))
-    testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
-  }
-})
-
-testthat::test_that("nthread argument works for qgram edit distances", {
-  # The runtime is so small that false positives will pop up.
-  # Need to artificially inflate the test DF size.
-
-  norm_methods <- c("cosine", "jaccard", "qgram")
-  for (method in norm_methods) {
-    runtime <- system.time(fozzie_string_inner_join(
-      do.call(rbind, replicate(10, test_df, simplify = FALSE)),
-      whoops,
-      by = 'Name',
-      method = method,
-      max_distance = 1,
-      q = 2,
-      nthread = 2
-    ))
-    testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
-  }
-})
+gram_methods <- c("cosine", "jaccard", "qgram")
+for (method in gram_methods) {
+  testthat::test_that(sprintf("nthread argument works for %s distances", method), {
+      runtime <- system.time(fozzie_string_inner_join(
+        baby1,
+        baby2,
+        by = 'name',
+        method = method,
+        max_distance = 1,
+        q = 2,
+        nthread = 2
+      ))
+      testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
+  })
+}

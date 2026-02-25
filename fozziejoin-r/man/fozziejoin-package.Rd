@@ -6,7 +6,7 @@
 \alias{fozziejoin-package}
 \title{fozziejoin: Utilities for Joining Dataframes with Inexact Matching}
 \description{
-Join dataframes and tibbles by inexact criteria, such as numeric difference and string distance.
+Join data frames by inexact criteria, such as numeric difference and string distance.
 }
 \seealso{
 Useful links:

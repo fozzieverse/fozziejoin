@@ -1,36 +1,39 @@
 Package: fozziejoin
 Title: Utilities for Joining Dataframes with Inexact Matching
 Version: 0.0.10
-Authors@R:  c(
+Authors@R: c(
     person("Jon", "Downs", , "jon@jondowns.net", role = c("aut", "cre")),
-    person(given = "The authors of the dependency Rust crates",
-             role = c("ctb", "cph"),
-             comment = "see inst/AUTHORS file for details")
-    )
+    person("The authors of the dependency Rust crates", role = c("ctb", "cph"),
+           comment = "see inst/AUTHORS file for details")
+  )
 Description: Join dataframes and tibbles by inexact criteria, such as
     numeric difference and string distance.
 License: MIT + file LICENSE
 Depends: 
     R (>= 4.2)
 Imports: 
-    stats
-Suggests: 
-    testthat (>= 3.0.0),
+    stats,
     tibble,
-    fuzzyjoin,
-    qdapDictionaries,
-    microbenchmark,
+    utils
+Suggests: 
     babynames,
+    dplyr,
+    fuzzyjoin,
     knitr,
+    microbenchmark,
+    qdapDictionaries,
     rmarkdown,
-    dplyr
+    testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Config/CodeOfConduct: 
+    https://github.com/fozzieverse/fozzieverse/blob/main/CODE_OF_CONDUCT.md
 Config/rextendr/version: 0.4.2
 Config/testthat/edition: 3
 Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
+URL: https://github.com/fozzieverse/fozziejoin
+BugReports: https://github.com/fozzieverse/fozziejoin/issues
 SystemRequirements: Cargo (Rust's package manager), rustc, xz
-LazyData: true
-Config/CodeOfConduct: https://github.com/fozzieverse/fozzieverse/blob/main/CODE_OF_CONDUCT.md
-VignetteBuilder: knitr
-

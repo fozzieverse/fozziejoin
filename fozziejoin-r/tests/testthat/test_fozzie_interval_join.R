@@ -19,7 +19,7 @@ test_that("left interval join includes all rows from df1", {
   df1 <- data.frame(start = c(1, 5, 10), end = c(3, 7, 12))
   df2 <- data.frame(start = c(2, 6), end = c(4, 8))
 
-  result <- fozzie_interval_join(df1, df2, by = c(start = "start", end = "end"), how = "left")
+  result <- fozzie_interval_left_join(df1, df2, by = c(start = "start", end = "end"))
   expect_equal(nrow(result), 3)
   expect_true(any(is.na(result$start.y)))
 })
@@ -28,7 +28,7 @@ test_that("right interval join includes all rows from df2", {
   df1 <- data.frame(start = c(1, 5), end = c(3, 7))
   df2 <- data.frame(start = c(2, 6, 10), end = c(4, 8, 12))
 
-  result <- fozzie_interval_join(df1, df2, by = c(start = "start", end = "end"), how = "right")
+  result <- fozzie_interval_right_join(df1, df2, by = c(start = "start", end = "end"))
   expect_equal(nrow(result), 3)
   expect_true(any(is.na(result$start.x)))
 })
@@ -37,7 +37,7 @@ test_that("anti interval join returns non-overlapping rows from df1", {
   df1 <- data.frame(start = c(1, 5, 10), end = c(3, 7, 12))
   df2 <- data.frame(start = c(2, 6), end = c(4, 8))
 
-  result <- fozzie_interval_join(df1, df2, by = c(start = "start", end = "end"), how = "anti")
+  result <- fozzie_interval_anti_join(df1, df2, by = c(start = "start", end = "end"))
   expect_equal(nrow(result), 1)
   expect_equal(result$start, 10)
 })
@@ -46,7 +46,7 @@ test_that("full interval join includes all rows from both tables", {
   df1 <- data.frame(start = c(1, 5, 10), end = c(3, 7, 12))
   df2 <- data.frame(start = c(100, 101, 102), end = c(101, 102, 103))
 
-  result <- fozzie_interval_join(df1, df2, by = c(start = "start", end = "end"), how = "full")
+  result <- fozzie_interval_full_join(df1, df2, by = c(start = "start", end = "end"))
   expect_equal(nrow(result), 6)
 })
 
@@ -124,10 +124,9 @@ test_that("interval_mode = real handles integer inputs", {
     end   = c(106L, 209L, 304L, 415L)
   )
 
-  olaps <- fozzie_interval_join(
+  olaps <- fozzie_interval_inner_join(
     df1, df2,
     by = c(start = "start", end = "end"),
-    how = "inner",
   )
 
   expect_equal(nrow(olaps), 4)

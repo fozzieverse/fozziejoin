@@ -372,7 +372,7 @@ testthat::test_that("nthread argument works for qgram edit distances", {
 
   norm_methods <- c("cosine", "jaccard", "qgram")
   for (method in norm_methods) {
-    runtime <- system.time(fozzie_string_join(
+    runtime <- system.time(fozzie_string_inner_join(
       do.call(rbind, replicate(10, test_df, simplify = FALSE)),
       whoops,
       by = 'Name',

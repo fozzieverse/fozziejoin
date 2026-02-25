@@ -64,12 +64,11 @@ testthat::test_that("Full join is correct for JW", {
     Name.y = c("Laim", "Laim", "Noahhh", "Olive", NA)
   ))
 
-  actual <- fozzie_string_join(
+  actual <- fozzie_string_full_join(
     baby_names,
     whoops,
     by = list("Name" = "Name"),
     method = "jw",
-    how = "full",
     max_distance = 0.5,
     nthread = 2
   )

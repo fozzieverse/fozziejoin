@@ -18,12 +18,11 @@ whoops <- data.frame(
 testthat::test_that("Anti join is correct for Levenshtein", {
   expected <- test_df[c(1:2, 4, 6, 9, 10), ]
   rownames(expected) <- NULL
-  actual <- fozzie_string_join(
+  actual <- fozzie_string_anti_join(
     test_df,
     whoops,
     by = list("Name" = "Name"),
     method = "lv",
-    how = "anti",
     max_distance = 1,
     nthread = 2
   )

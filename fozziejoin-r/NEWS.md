@@ -1,6 +1,7 @@
 # fozziejoin 0.0.11
 
 - Converted relative hyperlinks in the README file to absolute hyperlinks
+- Fixed remaining references to the old, archived GitHub repo
 - Added inst/AUTHORS file to list the authors of dependency Rust crates in addition to the LICENSE.note
 - Now that we have started the CRAN submission cycle, precompiled binaries for Windows will no longer be created. Relevant sections of the README have been updated.
 

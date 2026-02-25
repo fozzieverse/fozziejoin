@@ -26,7 +26,7 @@ A picture of Fozzie will appear in the repo once the legal team gets braver.
 - The `extendr` team. This project would not be possible without their great project.
 - The `fuzzyjoin` R package. Much of the project is meant to replicate their APIs and special cases handling.
 - The `stringdist` R package was used as a source of truth when developing string distance algorithms. `stringdist` is insanely performant.
-- The `textdistance` Rust crate is used in many algorithms, and their implementation was referenced to adapt custom string distance algorithms for this project. Such instances are explicitly acknowledged in the source code.
+- The `textdistance` Rust crate. While not used in the current implementation, its algorithms were referenced early on and adapted for our purposes. Such instances are acknowledged in source code.
 - The `rapidfuzz` Rust crate. When available, we tend to use `rapidfuzz` string distance algorithms due to its stellar performance.
 - The `rayon` Rust crate, which enables efficient parallel data processing.
 

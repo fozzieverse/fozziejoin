@@ -191,10 +191,10 @@ fozzie <- fozzie_string_join(
 
 ## Benchmarks
 
-Select benchmark comparisons are below. See [the benchmarks directory](../benchmarks/)
+Select benchmark comparisons are below. See [the benchmarks directory](https://github.com/fozzieverse/fozziejoin/tree/main/benchmarks)
 for the scripts ('r' subfolder) and results ('results' subfolder).
 For reproducibility, benchmarks are made using a GitHub workflow: see
-[../.github/workflows/run_rbase_benches.yml](GitHub Actions Workflow)
+[https://github.com/fozzieverse/fozziejoin/blob/main/.github/workflows/run_rbase_benches.yml](GitHub Actions Workflow)
 for the workflow spec. Linux users will observe the largest performance gains,
 presumably due to the relative efficiency of parallelization via `rayon`.
 

@@ -1,0 +1,91 @@
+The authors of the dependency Rust crates:
+
+anyhow (version 1.0.0):
+  David Tolnay
+
+autocfg (version 1.1.0):
+  Josh Stone
+
+crossbeam-deque (version 0.8.2):
+
+
+crossbeam-epoch (version 0.9.13):
+
+
+crossbeam-utils (version 0.8.14):
+
+
+either (version 1.8.0):
+  bluss
+
+extendr-api (version 0.3.1):
+  andy-thomason
+  Thomas Down
+  Mossa Merhi Reimert
+  Claus O. Wilke
+  Hiroaki Yutani
+  Ilia A. Kosenkov
+
+extendr-ffi (version 0.3.1):
+  andy-thomason
+  Thomas Down
+  Mossa Merhi Reimert
+  Claus O. Wilke
+  Hiroaki Yutani
+  Ilia A. Kosenkov
+
+extendr-macros (version 0.3.1):
+  andy-thomason
+  Thomas Down
+  Mossa Merhi Reimert
+  Claus O. Wilke
+  Hiroaki Yutani
+  Ilia A. Kosenkov
+
+interavl (version 1.0.0):
+  Dom Dwyer
+
+itertools (version 0.10.5):
+  bluss
+
+num-traits (version 0.2.15):
+  The Rust Project Developers
+
+once_cell (version 1.18.0):
+  Aleksey Kladov
+
+ordered-float (version 3.4.0):
+  Jonathan Reem
+  Matt Brubeck
+
+paste (version 1.0.11):
+  David Tolnay
+
+proc-macro2 (version 1.0.50):
+  David Tolnay
+  Alex Crichton
+
+quote (version 1.0.23):
+  David Tolnay
+
+rapidfuzz-rs (version 0.5.0)
+  Max Bachmann
+  Foster Guo
+
+rayon-core (version 1.10.1):
+  Niko Matsakis
+  Josh Stone
+
+rayon (version 1.6.1):
+  Niko Matsakis
+  Josh Stone
+
+rustc-hash (version 1.1.0):
+  The Rust Project Developers
+
+syn (version 1.0.107):
+  David Tolnay
+
+unicode-ident (version 1.0.6):
+  David Tolnay
+

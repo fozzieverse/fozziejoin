@@ -1,3 +1,8 @@
+# fozziejoin 0.0.11
+
+- Converted relative hyperlinks in the README file to absolute hyperlinks
+- Added inst/AUTHORS file to list the authors of dependency Rust crates in addition to the LICENSE.note
+
 # fozziejoin 0.0.10
 
 - Two vignettes added:
@@ -14,6 +19,7 @@
   which will be respected by all functions with an nthread argument. By
   default, the package uses the default from the multithreading Rust library
   `rayon`.
+- Initial CRAN submission
 
 # fozziejoin 0.0.9
 

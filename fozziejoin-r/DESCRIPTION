@@ -1,6 +1,6 @@
 Package: fozziejoin
 Title: Utilities for Joining Dataframes with Inexact Matching
-Version: 0.0.10
+Version: 0.0.11
 Authors@R: c(
     person("Jon", "Downs", , "jon@jondowns.net", role = c("aut", "cre")),
     person("The authors of the dependency Rust crates", role = c("ctb", "cph"),

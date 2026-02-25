@@ -1,7 +1,7 @@
 # fozziejoin 🧸
 
-> ⚠️ **Note**: This project is in early development.
-> APIs may change, and installing from source requires the Rust toolchain.
+> ⚠️ **Note**: This is a new R package, not yet on CRAN.
+> Installation requires the Rust toolchain.
 
 `fozziejoin` is an R package that performs fast fuzzy joins using Rust as a
 backend. It is a performance-minded re-imagining of the very popular
@@ -28,12 +28,7 @@ The name is a playful nod to “fuzzy join” — reminiscent of
 A picture of Fozzie will appear in the repo once the legal team gets braver.
 **Wocka wocka!**
 
-## Getting started
-
-Code has been written on a combination of Windows (R 4.3.2, 
-x86_64-w64-mingw32/64) and Linux (R 4.5.1, x86-64-pc-linux-gnu platform).
-
-### Requirements
+## Requirements
 
 R 4.2 or greater is required for all installations. R 4.5.0 or greater is preferred.
 
@@ -42,7 +37,9 @@ On Linux or to build from source, you will need these additional dependencies:
 - Cargo, the Rust package manager
 - Rustc
 - xz
-- `devtools`: The installation instructions assume you have this package for source installs. `R CMD INSTALL` or even `install.packages()` should also work if you want to avoid this dependency.
+
+While note strictly required, many of the installation instructions assume
+`devtools` is installed.
 
 To run the examples in the README or benchmarking scripts, the following are
 required:
@@ -55,29 +52,17 @@ required:
  
 ### Installation
 
-`fozziejoin` is currently under active development. The recommended
-installation method is from source. Precompiled binaries for select Windows
-builds will be provided with each tagged release. Once the package is accepted
-to CRAN, binaries will be available across platforms and R versions. Until 
-then, our focus is on building a stable, CRAN-ready product.
+`fozziejoin` is currently under development for a future CRAN release. Until
+CRAN acceptance, installing from source is the only option. An appropriate
+Rust toolchain is required.
 
-#### From source
-
-We recommend installing from the main GitHub branch for the latest updates.
-The main branch is only updated when all tests are passing.
-
-##### Linux
-
-macOS is expected to work but is not yet officially tested.
+#### Linux/MacOS
 
 ```r
-devtools::install_github("JonDDowns/fozziejoin")
-
-# Alternatively, install a tagged release:
-# install.packages("https://github.com/JonDDowns/fozziejoin/archive/refs/tags/v0.0.9.tar.gz", type = "source")
+devtools::install_github("fozzieverse/fozziejoin/fozziejoin-r")
 ```
 
-##### Windows users
+#### Windows
 
 To compile Rust extensions for R on Windows (such as those used by `rextendr`),
 you must use the **GNU Rust toolchain**, not MSVC. This is because R is built
@@ -96,61 +81,11 @@ rustup override set stable-x86_64-pc-windows-gnu
 2. Install the latest build from GitHub
 
 ```sh
-Rscript -e 'devtools::install_github("JonDDowns/fozziejoin")'
+Rscript -e 'devtools::install_github("fozzieverse/fozziejoin/fozziejoin-r")'
 # Or, clone and install locally
-# git clone https://github.com/JonDDowns/fozziejoin.git
+# git clone https://github.com/fozzieverse/fozziejoin.git
 # cd fozziejoin
-# Rscript.exe -e "devtools::install()"
-```
-
-#### From binary (Windows only)
-
-Binaries are found in the [releases](https://github.com/JonDDowns/fozziejoin/releases)
-section. Currently, binaries are built for the current (4.5.1), development
-(4.6.0) and most recent old release (4.4.3). Installation has not been tested
-on a wide variety of R versions yet. These binaries are provided to encourage
-more user testing while we pursue CRAN release, our primary goal. At that
-point, the installation process should become easier for most users.
-
-##### Download and extract release bundle
-
-```{r}
-# Define GitHub release URL
-release_url <- "https://github.com/JonDDowns/fozziejoin/releases/download/v0.0.9/fozziejoin_winbuilds_0.0.9.zip"
-
-# Download the zip file
-temp_zip <- tempfile(fileext = ".zip")
-download.file(release_url, temp_zip, mode = "wb")
-
-# Extract to a temp directory
-extract_dir <- tempfile()
-dir.create(extract_dir)
-unzip(temp_zip, exdir = extract_dir)
-```
-
-#####  Extract the correct version for your system.
-
-Set the `fozzie_version` variable based on your setup. Currently, three build
-targets are produced. Choose the one most appropriate for your R version.
-Below are suggested versions to use:
-
-- R version 4.6.0 or higher: `r_4.6.0`
-- R versions 4.5.0 or higher: `r_4.5.1`
-- R versions 4.4.3 and before: `r_4.4.3`
-
-```{r}
-# r_folder <- "r_4.6.0"
-# r_folder <- "r_4.4.3"
-r_folder <- "r_4.5.1"
-
-# Path to the correct subfolder
-pkg_path <- file.path(extract_dir, "fozziejoin_winbuilds_0.0.9", r_folder)
-
-# Find the compiled binary (assumes only one .zip inside each subfolder)
-pkg_file <- list.files(pkg_path, pattern = "\\.zip$", full.names = TRUE)
-
-# Install the package
-install.packages(pkg_file, repos = NULL, type = "win.binary")
+# Rscript.exe -e "devtools::install('./fozziejoin-r')"
 ```
 
 ### Usage
@@ -191,10 +126,10 @@ fozzie <- fozzie_string_join(
 
 ## Benchmarks
 
-Select benchmark comparisons are below. See [the benchmarks directory](../benchmarks/)
+Select benchmark comparisons are below. See [the benchmarks directory](https://github.com/fozzieverse/fozziejoin/tree/main/benchmarks)
 for the scripts ('r' subfolder) and results ('results' subfolder).
 For reproducibility, benchmarks are made using a GitHub workflow: see
-[../.github/workflows/run_rbase_benches.yml](GitHub Actions Workflow)
+[GitHub Actions Workflow](https://github.com/fozzieverse/fozziejoin/blob/main/.github/workflows/run_rbase_benches.yml)
 for the workflow spec. Linux users will observe the largest performance gains,
 presumably due to the relative efficiency of parallelization via `rayon`.
 

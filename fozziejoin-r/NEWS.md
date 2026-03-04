@@ -1,6 +1,6 @@
 # fozziejoin 0.0.13
 
-- The functions `fozzie_difference_join_rs`, `fozzie_distance_join_rs`, `fozzie_interval_join_rs`, `fozzie_regex_join_rs`, and `fozzie_string_join_rs` functions are no longer exported and their `.Rd` documentation files have been remvoed.
+- The functions `fozzie_difference_join_rs`, `fozzie_distance_join_rs`, `fozzie_interval_join_rs`, `fozzie_regex_join_rs`, and `fozzie_string_join_rs` functions are no longer exported and their `.Rd` documentation files have been removed.
 - Description file updated to add references for 'fuzzyjoin' as well as the Rust crates 'textdistance', 'rapidfuzz', and 'interavl'
 
 # fozziejoin 0.0.12

@@ -24,7 +24,7 @@ build-rbase:
 	cd builds && R CMD build ../fozziejoin-r
 
 check-rbase:
-	cd builds && R CMD check $(FILENAME)
+	cd builds && R CMD check $(FILENAME) --as-cran
 	Rscript -e "devtools::check_win_devel('./fozziejoin-r')"
 	Rscript -e "devtools::check_win_release('./fozziejoin-r')"
 	Rscript -e "devtools::check_mac_release('./fozziejoin-r')"

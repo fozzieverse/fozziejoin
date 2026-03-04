@@ -1,3 +1,8 @@
+# fozziejoin 0.0.13
+
+- The functions `fozzie_difference_join_rs`, `fozzie_distance_join_rs`, `fozzie_interval_join_rs`, `fozzie_regex_join_rs`, and `fozzie_string_join_rs` functions are no longer exported and their `.Rd` documentation files have been remvoed.
+- Description file updated to add references for 'fuzzyjoin' as well as the Rust crates 'textdistance', 'rapidfuzz', and 'interavl'
+
 # fozziejoin 0.0.12
 
 - Enhanced the testing suite for multithreading validation. The testing suite is configured to use, at most, 2 threads. To ensure this is honored, we check that the user space time is less than or equal to 2.5 times the wall clock time. However, when datasets become very small, these tests can fail sporadically. Tests have been updated to use larger datasets for better reliability.

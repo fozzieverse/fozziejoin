@@ -1,6 +1,7 @@
 # Rust build artifacts
 /target/
 /Cargo.lock
+builds/
 
 # Python build artifacts (for maturin)
 /fozziejoin-py/__pycache__/

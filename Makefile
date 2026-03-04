@@ -21,9 +21,10 @@ test-rbase:
 	Rscript -e "devtools::test(pkg = '$(SUBDIR)')"
 
 build-rbase:
-	R CMD build ./fozziejoin-r
+	cd builds && R CMD build ../fozziejoin-r
 
-check-osbuilds-rbase:
+check-rbase:
+	cd builds && R CMD check $(FILENAME)
 	Rscript -e "devtools::check_win_devel('./fozziejoin-r')"
 	Rscript -e "devtools::check_win_release('./fozziejoin-r')"
 	Rscript -e "devtools::check_mac_release('./fozziejoin-r')"

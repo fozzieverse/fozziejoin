@@ -10,39 +10,21 @@
 #' @useDynLib fozziejoin, .registration = TRUE
 NULL
 
-#' @title Internal: String Join via Rust
-#' @description Internal function. Performs a string-based fuzzy join using Rust backend.
-#' @keywords internal
-#' @export
 fozzie_string_join_rs <- function(df1, df2, by, method, how, max_distance, distance_col, q, max_prefix, prefix_weight, nthread) .Call(wrap__fozzie_string_join_rs, df1, df2, by, method, how, max_distance, distance_col, q, max_prefix, prefix_weight, nthread)
 
-#' @title Internal: Difference Join via Rust
-#' @description Internal function. Performs a difference-based fuzzy join using Rust backend.
-#' @keywords internal
-#' @export
 fozzie_difference_join_rs <- function(df1, df2, by, how, max_distance, distance_col, nthread) .Call(wrap__fozzie_difference_join_rs, df1, df2, by, how, max_distance, distance_col, nthread)
 
-#' @title Internal: Distance Join via Rust
-#' @description Internal function. Performs a distance-based fuzzy join using Rust backend.
-#' @keywords internal
-#' @export
 fozzie_distance_join_rs <- function(df1, df2, by, method, how, max_distance, distance_col, nthread) .Call(wrap__fozzie_distance_join_rs, df1, df2, by, method, how, max_distance, distance_col, nthread)
 
-#' @title Internal: Interval Join via Rust
-#' @description Internal function. Performs an interval-based fuzzy join using Rust backend.
-#' @keywords internal
-#' @export
 fozzie_interval_join_rs <- function(df1, df2, by, how, overlap_type, maxgap, minoverlap, interval_mode, nthread) .Call(wrap__fozzie_interval_join_rs, df1, df2, by, how, overlap_type, maxgap, minoverlap, interval_mode, nthread)
 
-#' @title Internal: Regex Join via Rust
-#' @description Internal function. Performs a regex-based fuzzy join using Rust backend.
-#' @keywords internal
-#' @export
 fozzie_regex_join_rs <- function(df1, df2, by, how, ignore_case, nthread) .Call(wrap__fozzie_regex_join_rs, df1, df2, by, how, ignore_case, nthread)
 
-#' @title Get number of threads in global thread pool
-#' @description Returns default rayon number of threads
-#' @keywords internal
+#' @title Get Number of Threads in the Global Thread Pool
+#' @description This function retrieves the current number of threads
+#' allocated by the Rayon thread pool. Understanding this value can
+#' be useful for optimizing the parallelization capacity of your computations.
+#' @return A single numeric value indicating the number of threads in the global thread pool.
 #' @export
 get_nthread_default <- function() .Call(wrap__get_nthread_default)
 

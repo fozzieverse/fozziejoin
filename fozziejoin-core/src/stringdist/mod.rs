@@ -1,3 +1,4 @@
+mod hamming;
 mod jaccard;
 mod string_dist_method;
 

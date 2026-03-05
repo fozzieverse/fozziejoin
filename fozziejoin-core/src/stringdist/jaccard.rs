@@ -2,6 +2,7 @@
 // Source: https://docs.rs/textdistance/latest/textdistance/
 // License: MIT
 
+use crate::stringdist::string_dist_method::StringDistance;
 use anyhow::Result;
 use log::warn;
 use rayon::prelude::*;
@@ -33,8 +34,8 @@ fn get_qgram_set(s: &str, q: usize) -> FxHashSet<&str> {
     grams
 }
 
-impl Jaccard {
-    pub fn fuzzy_indices(
+impl StringDistance for Jaccard {
+    fn fuzzy_indices(
         &self,
         left: &Vec<Option<String>>,
         right: &Vec<Option<String>>,
@@ -135,7 +136,7 @@ impl Jaccard {
         Ok(results)
     }
 
-    pub fn compare_pairs(
+    fn compare_pairs(
         &self,
         left: &Vec<Option<String>>,
         right: &Vec<Option<String>>,

@@ -5,17 +5,17 @@ def test_string_jaccard_join():
     """The expected join values should be returned"""
     left = pl.DataFrame({
         "id": [1, 2, 3],
-        "ARTS_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY"]
+        "LEFT_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY"]
     })
     right = pl.DataFrame({
         "key": [2, 3, 4],
-        "CHILD_FULL_NAME": ["JON SMITH", "JACKSON DOE", "ZENDAYA"]
+        "RIGHT_FULL_NAME": ["JON SMITH", "JACKSON DOE", "ZENDAYA"]
     })
 
     joined = fozziejoin.string_distance_join(
         left, right,
-        left_on=['ARTS_FULL_NAME'],
-        right_on=['CHILD_FULL_NAME'],
+        left_on=['LEFT_FULL_NAME'],
+        right_on=['RIGHT_FULL_NAME'],
         how='inner',
         method='jaccard',
         max_distance=0.9,
@@ -27,7 +27,7 @@ def test_string_jaccard_join():
 
     # Assert expected matches (you can refine this based on actual logic)
     expected_names = {"JOHN SMITH", "JACK DOE"}
-    assert set(joined["ARTS_FULL_NAME"].to_list()) <= expected_names
+    assert set(joined["LEFT_FULL_NAME"].to_list()) <= expected_names
     assert len(joined) > 0
 
 
@@ -35,17 +35,17 @@ def test_string_jaccard_join_with_null():
     """Nones should not join to one another."""
     left = pl.DataFrame({
         "id": [1, 2, 3, 4],
-        "ARTS_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY", None]
+        "LEFT_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY", None]
     })
     right = pl.DataFrame({
         "key": [2, 3, 4, 5, 6],
-        "CHILD_FULL_NAME": ["JON SMITH", "JACKSON DOE", "ZENDAYA", "JOHN SMITH", None]
+        "RIGHT_FULL_NAME": ["JON SMITH", "JACKSON DOE", "ZENDAYA", "JOHN SMITH", None]
     })
 
     joined = fozziejoin.string_distance_join(
         left, right,
-        left_on=['ARTS_FULL_NAME'],
-        right_on=['CHILD_FULL_NAME'],
+        left_on=['LEFT_FULL_NAME'],
+        right_on=['RIGHT_FULL_NAME'],
         how='inner',
         method='jaccard',
         max_distance=0.9,
@@ -56,11 +56,11 @@ def test_string_jaccard_join_with_null():
     assert isinstance(joined, pl.DataFrame)
 
     # Assert that None values are either ignored or handled safely
-    assert None not in joined["ARTS_FULL_NAME"].to_list()
+    assert None not in joined["LEFT_FULL_NAME"].to_list()
 
     # Assert expected matches
     expected_names = {"JOHN SMITH", "JACK DOE"}
-    assert set(joined["ARTS_FULL_NAME"].to_list()) <= expected_names
+    assert set(joined["LEFT_FULL_NAME"].to_list()) <= expected_names
     assert len(joined) > 0
 
 def test_column_name_collision_suffix():
@@ -142,4 +142,33 @@ def test_multi_column_fuzzy_join():
     # Optional: check that suffix was applied to overlapping columns
     assert "first_right" in result.columns
     assert "last_right" in result.columns
+
+
+def test_string_hamming_join():
+    """The expected join values should be returned using Hamming distance."""
+    left = pl.DataFrame({
+        "id": [1, 2, 3],
+        "LEFT_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY"]
+    })
+    right = pl.DataFrame({
+        "key": [2, 3, 4],
+        "RIGHT_FULL_NAME": ["JOHN_SMITH", "JACKSON DOE", "ZENDAYA"]
+    })
+
+    joined = fozziejoin.string_distance_join(
+        left, right,
+        left_on=['LEFT_FULL_NAME'],
+        right_on=['RIGHT_FULL_NAME'],
+        how='inner',
+        method='hamming',
+        max_distance=1,
+    )
+
+    # Assert that the result is a DataFrame
+    assert isinstance(joined, pl.DataFrame)
+
+    # Assert expected matches
+    expected_names = {"JOHN SMITH"}
+    assert set(joined["LEFT_FULL_NAME"].to_list()) <= expected_names
+    assert len(joined) > 0
 

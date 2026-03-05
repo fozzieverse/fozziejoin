@@ -1,12 +1,12 @@
 use crate::stringdist::string_dist_method::StringDistance;
 use anyhow::Result;
 use itertools::iproduct;
-use rapidfuzz::distance::hamming as ham_rf;
+use rapidfuzz::distance::levenshtein as lev_rf;
 use rayon::prelude::*;
 use rustc_hash::FxHashMap;
 
-pub struct Hamming;
-impl StringDistance for Hamming {
+pub struct Levenshtein;
+impl StringDistance for Levenshtein {
     fn compare_pairs(
         &self,
         left: &Vec<Option<String>>,
@@ -17,7 +17,7 @@ impl StringDistance for Hamming {
         _max_prefix: Option<usize>,
         pool: &rayon::ThreadPool,
     ) -> Result<(Vec<usize>, Vec<f64>)> {
-        let args = ham_rf::Args::default().score_cutoff(*max_distance as usize);
+        let args = lev_rf::Args::default().score_cutoff(*max_distance as usize);
         let (keep, dists): (Vec<usize>, Vec<f64>) = pool.install(|| {
             left.par_iter()
                 .zip(right)
@@ -32,9 +32,7 @@ impl StringDistance for Hamming {
                         None => return None,
                     };
 
-                    let out = ham_rf::distance_with_args(l.chars(), r.chars(), &args)
-                        .ok()
-                        .flatten()
+                    let out = lev_rf::distance_with_args(l.chars(), r.chars(), &args)
                         .map(|x| x as f64)
                         .filter(|&x| x <= *max_distance)
                         .map(|x| (i, x));
@@ -86,7 +84,7 @@ impl StringDistance for Hamming {
     }
 }
 
-impl Hamming {
+impl Levenshtein {
     fn compare_one_to_many(
         &self,
         k1: &str,
@@ -95,8 +93,8 @@ impl Hamming {
         idx_map: &FxHashMap<&str, Vec<usize>>,
         max_distance: &f64,
     ) -> Option<Vec<(usize, usize, f64)>> {
-        let scorer = ham_rf::BatchComparator::new(k1.chars());
-        let args = ham_rf::Args::default().score_cutoff(*max_distance as usize);
+        let scorer = lev_rf::BatchComparator::new(k1.chars());
+        let args = lev_rf::Args::default().score_cutoff(*max_distance as usize);
 
         // Get range of lengths within max distance of current
         let k1_len = k1.chars().count();
@@ -120,12 +118,7 @@ impl Hamming {
                     }
 
                     // Run distance calculation
-                    let dist = scorer.distance_with_args(k2.chars(), &args);
-
-                    let dist = match dist {
-                        Ok(x) => x,
-                        Err(_) => None,
-                    };
+                    let dist: Option<usize> = scorer.distance_with_args(k2.chars(), &args);
 
                     match dist {
                         Some(x) => {

@@ -6,7 +6,7 @@
 \alias{fozziejoin-package}
 \title{fozziejoin: Utilities for Joining Dataframes with Inexact Matching}
 \description{
-Join data frames by inexact criteria, such as numeric difference and string distance.
+Provides functions for joining data frames based on inexact criteria, including string distance, Manhattan distance, Euclidean distance, and interval overlap. This API is designed as a modern, performance-oriented alternative to the 'fuzzyjoin' package (Robinson 2026) \doi{10.32614/CRAN.package.fuzzyjoin}. String distance functions utilizing 'q-grams' are adapted with permission from the 'textdistance' 'Rust' crate (Orsinium 2024) \url{https://docs.rs/textdistance/latest/textdistance/}. Other string distance calculations rely on the 'rapidfuzz' 'Rust' crate (Bachmann 2023) \url{https://docs.rs/rapidfuzz/0.5.0/rapidfuzz/}. Interval joins are backed by a Adelson-Velsky and Landis tree as implemented by the 'interavl' 'Rust' crate \url{https://docs.rs/interavl/0.5.0/interavl/}.
 }
 \seealso{
 Useful links:

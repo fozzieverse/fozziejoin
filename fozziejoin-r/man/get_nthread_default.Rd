@@ -2,11 +2,15 @@
 % Please edit documentation in R/extendr-wrappers.R
 \name{get_nthread_default}
 \alias{get_nthread_default}
-\title{Get number of threads in global thread pool}
+\title{Get Number of Threads in the Global Thread Pool}
 \usage{
 get_nthread_default()
 }
-\description{
-Returns default rayon number of threads
+\value{
+A single numeric value indicating the number of threads in the global thread pool.
 }
-\keyword{internal}
+\description{
+This function retrieves the current number of threads
+allocated by the Rayon thread pool. Understanding this value can
+be useful for optimizing the parallelization capacity of your computations.
+}

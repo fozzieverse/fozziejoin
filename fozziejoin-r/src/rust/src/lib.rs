@@ -20,10 +20,6 @@ use crate::regex::{regex_join, regex_pairs};
 use crate::string::string_join;
 use crate::utils::get_pool;
 
-/// @title Internal: String Join via Rust
-/// @description Internal function. Performs a string-based fuzzy join using Rust backend.
-/// @keywords internal
-/// @export
 #[extendr]
 pub fn fozzie_string_join_rs(
     df1: List,
@@ -55,10 +51,6 @@ pub fn fozzie_string_join_rs(
     Ok(result)
 }
 
-/// @title Internal: Difference Join via Rust
-/// @description Internal function. Performs a difference-based fuzzy join using Rust backend.
-/// @keywords internal
-/// @export
 #[extendr]
 pub fn fozzie_difference_join_rs(
     df1: List,
@@ -131,10 +123,6 @@ pub fn fozzie_difference_join_rs(
     Ok(out)
 }
 
-/// @title Internal: Distance Join via Rust
-/// @description Internal function. Performs a distance-based fuzzy join using Rust backend.
-/// @keywords internal
-/// @export
 #[extendr]
 pub fn fozzie_distance_join_rs(
     df1: List,
@@ -164,10 +152,6 @@ pub fn fozzie_distance_join_rs(
     Ok(joined)
 }
 
-/// @title Internal: Interval Join via Rust
-/// @description Internal function. Performs an interval-based fuzzy join using Rust backend.
-/// @keywords internal
-/// @export
 #[extendr]
 pub fn fozzie_interval_join_rs(
     df1: List,
@@ -205,10 +189,6 @@ pub fn fozzie_interval_join_rs(
     Ok(joined)
 }
 
-/// @title Internal: Regex Join via Rust
-/// @description Internal function. Performs a regex-based fuzzy join using Rust backend.
-/// @keywords internal
-/// @export
 #[extendr]
 pub fn fozzie_regex_join_rs(
     df1: List,
@@ -252,9 +232,11 @@ pub fn fozzie_regex_join_rs(
     Ok(out)
 }
 
-/// @title Get number of threads in global thread pool
-/// @description Returns default rayon number of threads
-/// @keywords internal
+/// @title Get Number of Threads in the Global Thread Pool
+/// @description This function retrieves the current number of threads
+/// allocated by the Rayon thread pool. Understanding this value can
+/// be useful for optimizing the parallelization capacity of your computations.
+/// @return A single numeric value indicating the number of threads in the global thread pool.
 /// @export
 #[extendr]
 fn get_nthread_default() -> usize {

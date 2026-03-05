@@ -11,7 +11,7 @@ use std::collections::VecDeque;
 
 use crate::string::ngram::QGramDistance;
 
-// Cosine Distance Implementation
+// Jaccard Distance Implementation
 pub struct Jaccard;
 
 fn get_qgram_set(s: &str, q: usize) -> FxHashSet<&str> {

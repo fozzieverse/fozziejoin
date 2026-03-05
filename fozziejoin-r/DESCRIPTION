@@ -1,12 +1,22 @@
 Package: fozziejoin
 Title: Utilities for Joining Dataframes with Inexact Matching
-Version: 0.0.12
+Version: 0.0.13
 Authors@R: c(
     person("Jon", "Downs", , "jon@jondowns.net", role = c("aut", "cre")),
     person("The authors of the dependency Rust crates", role = c("ctb", "cph"),
            comment = "see inst/AUTHORS file for details")
   )
-Description: Join data frames by inexact criteria, such as numeric difference and string distance.
+Description: Provides functions for joining data frames based on inexact
+    criteria, including string distance, Manhattan distance, Euclidean
+    distance, and interval overlap. This API is designed as a modern,
+    performance-oriented alternative to the 'fuzzyjoin' package (Robinson 2026)
+    <doi:10.32614/CRAN.package.fuzzyjoin>. String distance functions utilizing
+    'q-grams' are adapted with permission from the 'textdistance' 'Rust' crate
+    (Orsinium 2024) <https://docs.rs/textdistance/latest/textdistance/>. Other
+    string distance calculations rely on the 'rapidfuzz' 'Rust' crate (Bachmann
+    2023) <https://docs.rs/rapidfuzz/0.5.0/rapidfuzz/>. Interval joins are
+    backed by a Adelson-Velsky and Landis tree as implemented by the 'interavl'
+    'Rust' crate <https://docs.rs/interavl/0.5.0/interavl/>.
 License: MIT + file LICENSE
 Depends: 
     R (>= 4.2)

@@ -3,7 +3,7 @@
 # Prepare for CRAN ----
 
 # Update dependencies in DESCRIPTION
-attachment::att_amend_desc()
+# attachment::att_amend_desc()
 
 # Check package coverage
 covr::package_coverage()
@@ -16,10 +16,10 @@ devtools::test()
 devtools::run_examples()
 
 # Check package as CRAN using the correct CRAN repo
-withr::with_options(list(repos = c(CRAN = "https://cloud.r-project.org/")), {
-  callr::default_repos()
-  rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"))
-})
+#withr::with_options(list(repos = c(CRAN = "https://cloud.r-project.org/")), {
+#  callr::default_repos()
+#  rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"))
+#})
 
 # Check content
 # All functions must have either `@noRd` or an `@export`.
@@ -40,10 +40,10 @@ urlchecker::url_update()
 
 # check on other distributions
 # _rhub v2
-rhub::rhub_setup() # Commit, push, merge
-rhub::rhub_doctor()
-rhub::rhub_platforms()
-rhub::rhub_check() # launch manually
+# rhub::rhub_setup() # Commit, push, merge
+# rhub::rhub_doctor()
+# rhub::rhub_platforms()
+# rhub::rhub_check() # launch manually
 
 # _win devel CRAN
 devtools::check_win_devel()

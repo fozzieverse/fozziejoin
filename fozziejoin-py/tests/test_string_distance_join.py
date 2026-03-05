@@ -172,3 +172,31 @@ def test_string_hamming_join():
     assert set(joined["LEFT_FULL_NAME"].to_list()) <= expected_names
     assert len(joined) > 0
 
+def test_string_levenshtein_join():
+    """The expected join values should be returned using Levenshtein distance."""
+    left = pl.DataFrame({
+        "id": [1, 2, 3, 4],
+        "LEFT_FULL_NAME": ["JOHN SMITH", "JACK DOE", "SILLY BILLY", "ALICE GREEN"]
+    })
+    right = pl.DataFrame({
+        "key": [2, 3, 4, 5],
+        "RIGHT_FULL_NAME": ["JOHN SMYT", "JACK DO", "SILLY BILI", "ALICE GRIN"]
+    })
+
+    joined = fozziejoin.string_distance_join(
+        left, right,
+        left_on=['LEFT_FULL_NAME'],
+        right_on=['RIGHT_FULL_NAME'],
+        how='inner',
+        method='levenshtein',
+        max_distance=2,
+    )
+
+    # Assert that the result is a DataFrame
+    assert isinstance(joined, pl.DataFrame)
+
+    # Assert expected matches
+    expected_names = {"JOHN SMITH", "JACK DOE", "SILLY BILLY", "ALICE GREEN"}
+    assert set(joined["LEFT_FULL_NAME"].to_list()) <= expected_names
+    assert len(joined) > 0
+

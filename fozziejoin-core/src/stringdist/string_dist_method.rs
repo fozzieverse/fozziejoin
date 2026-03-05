@@ -1,5 +1,6 @@
 use crate::stringdist::hamming::Hamming;
 use crate::stringdist::jaccard::Jaccard;
+use crate::stringdist::levenshtein::Levenshtein;
 use anyhow::Result;
 
 pub trait StringDistance {
@@ -29,6 +30,7 @@ pub trait StringDistance {
 pub enum StringDistMethod {
     Jaccard(Jaccard),
     Hamming(Hamming),
+    Levenshtein(Levenshtein),
 }
 
 impl StringDistMethod {
@@ -36,6 +38,7 @@ impl StringDistMethod {
         match method {
             "jaccard" => Ok(StringDistMethod::Jaccard(Jaccard)),
             "hamming" => Ok(StringDistMethod::Hamming(Hamming)),
+            "levenshtein" => Ok(StringDistMethod::Levenshtein(Levenshtein)),
             _ => Err(anyhow::anyhow!("Unsupported method `{}`", method)),
         }
     }
@@ -69,6 +72,15 @@ impl StringDistMethod {
                 max_prefix,
                 pool,
             ),
+            StringDistMethod::Levenshtein(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
         }
     }
 
@@ -93,6 +105,15 @@ impl StringDistMethod {
                 pool,
             ),
             StringDistMethod::Hamming(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::Levenshtein(distance) => distance.compare_pairs(
                 left,
                 right,
                 max_distance,

@@ -1,9 +1,11 @@
+use crate::stringdist::cosine::Cosine;
 use crate::stringdist::damerau_levenshtein::DamerauLevenshtein;
 use crate::stringdist::hamming::Hamming;
 use crate::stringdist::jaccard::Jaccard;
 use crate::stringdist::lcs::LCS;
 use crate::stringdist::levenshtein::Levenshtein;
 use crate::stringdist::osa::OSA;
+use crate::stringdist::qgram::QGram;
 use anyhow::Result;
 
 pub trait StringDistance {
@@ -37,6 +39,8 @@ pub enum StringDistMethod {
     OSA(OSA),
     DamerauLevenshtein(DamerauLevenshtein),
     LCS(LCS),
+    Cosine(Cosine),
+    QGram(QGram),
 }
 
 impl StringDistMethod {
@@ -50,6 +54,8 @@ impl StringDistMethod {
                 Ok(StringDistMethod::DamerauLevenshtein(DamerauLevenshtein))
             }
             "lcs" => Ok(StringDistMethod::LCS(LCS)),
+            "cosine" => Ok(StringDistMethod::Cosine(Cosine)),
+            "qgram" => Ok(StringDistMethod::QGram(QGram)),
             _ => Err(anyhow::anyhow!("Unsupported method `{}`", method)),
         }
     }
@@ -119,6 +125,24 @@ impl StringDistMethod {
                 max_prefix,
                 pool,
             ),
+            StringDistMethod::Cosine(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::QGram(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
         }
     }
 
@@ -179,6 +203,24 @@ impl StringDistMethod {
                 pool,
             ),
             StringDistMethod::LCS(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::Cosine(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::QGram(distance) => distance.compare_pairs(
                 left,
                 right,
                 max_distance,

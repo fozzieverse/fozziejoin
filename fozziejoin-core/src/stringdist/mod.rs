@@ -1,5 +1,7 @@
+mod damerau_levenshtein;
 mod hamming;
 mod jaccard;
+mod lcs;
 mod levenshtein;
 mod osa;
 mod string_dist_method;

@@ -1,12 +1,12 @@
 use crate::stringdist::string_dist_method::StringDistance;
 use anyhow::Result;
 use itertools::iproduct;
-use rapidfuzz::distance::hamming as ham_rf;
+use rapidfuzz::distance::osa as osa_rf;
 use rayon::prelude::*;
 use rustc_hash::FxHashMap;
 
-pub struct Hamming;
-impl StringDistance for Hamming {
+pub struct OSA;
+impl StringDistance for OSA {
     fn compare_pairs(
         &self,
         left: &Vec<Option<String>>,
@@ -17,7 +17,7 @@ impl StringDistance for Hamming {
         _max_prefix: Option<usize>,
         pool: &rayon::ThreadPool,
     ) -> Result<(Vec<usize>, Vec<f64>)> {
-        let args = ham_rf::Args::default().score_cutoff(*max_distance as usize);
+        let args = osa_rf::Args::default().score_cutoff(*max_distance as usize);
         let (keep, dists): (Vec<usize>, Vec<f64>) = pool.install(|| {
             left.par_iter()
                 .zip(right)
@@ -32,9 +32,7 @@ impl StringDistance for Hamming {
                         None => return None,
                     };
 
-                    let out = ham_rf::distance_with_args(l.chars(), r.chars(), &args)
-                        .ok()
-                        .flatten()
+                    let out = osa_rf::distance_with_args(l.chars(), r.chars(), &args)
                         .map(|x| x as f64)
                         .filter(|&x| x <= *max_distance)
                         .map(|x| (i, x));
@@ -86,7 +84,7 @@ impl StringDistance for Hamming {
     }
 }
 
-impl Hamming {
+impl OSA {
     fn compare_one_to_many(
         &self,
         k1: &str,
@@ -95,8 +93,8 @@ impl Hamming {
         idx_map: &FxHashMap<&str, Vec<usize>>,
         max_distance: &f64,
     ) -> Option<Vec<(usize, usize, f64)>> {
-        let scorer = ham_rf::BatchComparator::new(k1.chars());
-        let args = ham_rf::Args::default().score_cutoff(*max_distance as usize);
+        let scorer = osa_rf::BatchComparator::new(k1.chars());
+        let args = osa_rf::Args::default().score_cutoff(*max_distance as usize);
 
         // Get range of lengths within max distance of current
         let k1_len = k1.chars().count();
@@ -120,12 +118,7 @@ impl Hamming {
                     }
 
                     // Run distance calculation
-                    let dist = scorer.distance_with_args(k2.chars(), &args);
-
-                    let dist = match dist {
-                        Ok(x) => x,
-                        Err(_) => None,
-                    };
+                    let dist: Option<usize> = scorer.distance_with_args(k2.chars(), &args);
 
                     match dist {
                         Some(x) => {
@@ -160,33 +153,33 @@ mod tests {
 
     #[test]
     fn test_compare_pairs_basic() {
-        let hamming = Hamming;
+        let osa = OSA;
         let left = vec![Some("test".to_string()), Some("rust".to_string()), None];
         let right = vec![
             Some("test".to_string()),
-            Some("rusts".to_string()),
+            Some("rusty".to_string()),
             Some("wrong".to_string()),
         ];
         let max_distance = 1.0;
         let pool = crate::utils::get_pool(None).unwrap();
 
-        let (indices, distances) = hamming
+        let (indices, distances) = osa
             .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
             .unwrap();
 
-        assert_eq!(indices, vec![0]); // Expecting to match indices 0 and 1
-        assert_eq!(distances, vec![0.]); // Expecting two distances
+        assert_eq!(indices, vec![0, 1]); // Should match indices 0 and 1
+        assert_eq!(distances.len(), 2); // Expecting two distances
     }
 
     #[test]
     fn test_compare_pairs_empty_strings() {
-        let hamming = Hamming;
+        let osa = OSA;
         let left = vec![Some("".to_string())];
         let right = vec![Some("".to_string())];
         let max_distance = 0.0;
         let pool = crate::utils::get_pool(None).unwrap();
 
-        let (indices, distances) = hamming
+        let (indices, distances) = osa
             .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
             .unwrap();
 
@@ -196,32 +189,33 @@ mod tests {
 
     #[test]
     fn test_fuzzy_indices_basic() {
-        let hamming = Hamming;
+        let osa = OSA;
         let left = vec![Some("test".to_string()), Some("rust".to_string())];
         let right = vec![
             Some("test".to_string()),
-            Some("rusts".to_string()),
+            Some("rusty".to_string()),
             Some("wrong".to_string()),
         ];
         let max_distance = 1.0;
         let pool = crate::utils::get_pool(None).unwrap();
 
-        let indices = hamming
+        let indices = osa
             .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
             .unwrap();
 
-        assert_eq!(indices.len(), 1);
+        assert_eq!(indices.len(), 2); // Expecting to find two pairs
+                                      // You can make assertions specific to expected pairs
     }
 
     #[test]
     fn test_fuzzy_indices_with_none() {
-        let hamming = Hamming;
+        let osa = OSA;
         let left = vec![Some("test".to_string()), None];
-        let right = vec![Some("test".to_string()), Some("rusts".to_string())];
+        let right = vec![Some("test".to_string()), Some("rusty".to_string())];
         let max_distance = 1.0;
         let pool = crate::utils::get_pool(None).unwrap();
 
-        let indices = hamming
+        let indices = osa
             .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
             .unwrap();
 
@@ -230,7 +224,7 @@ mod tests {
 
     #[test]
     fn test_compare_one_to_many() {
-        let hamming = Hamming;
+        let osa = OSA;
         let k1 = "test";
         let v1 = vec![0];
         let length_map: FxHashMap<usize, Vec<&str>> =
@@ -241,7 +235,7 @@ mod tests {
             .collect();
         let max_distance = 1.0;
 
-        let result = hamming
+        let result = osa
             .compare_one_to_many(k1, &v1, &length_map, &idx_map, &max_distance)
             .unwrap();
 

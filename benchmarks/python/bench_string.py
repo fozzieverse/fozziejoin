@@ -11,13 +11,13 @@ df1 = orig[['misspelling']]
 df2 = orig.clone()[['correct']]
 
 # Benchmark loop
-runs = 5
+runs = 20
 records = []
 
 for i in range(runs):
     # Cross-join with polars-distance
     start = time.perf_counter()
-    cj = df1.join(df2, how='cross').filter(
+    cj = df1.join_where(df2,
         pld.col('misspelling').dist_str.levenshtein('correct').le(1)
     )
     pld_time = time.perf_counter() - start

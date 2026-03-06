@@ -1,6 +1,7 @@
 mod hamming;
 mod jaccard;
 mod levenshtein;
+mod osa;
 mod string_dist_method;
 
 use crate::join::{DistanceData, FuzzyJoin};

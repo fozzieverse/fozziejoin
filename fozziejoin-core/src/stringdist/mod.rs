@@ -2,6 +2,7 @@ mod cosine;
 mod damerau_levenshtein;
 mod hamming;
 mod jaccard;
+mod jaro_winkler;
 mod lcs;
 mod levenshtein;
 mod osa;

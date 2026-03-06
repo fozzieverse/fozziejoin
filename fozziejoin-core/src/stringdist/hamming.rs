@@ -153,3 +153,103 @@ impl Hamming {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rayon::ThreadPoolBuilder;
+
+    fn test_thread_pool() -> rayon::ThreadPool {
+        ThreadPoolBuilder::new().num_threads(4).build().unwrap()
+    }
+
+    #[test]
+    fn test_compare_pairs_basic() {
+        let hamming = Hamming;
+        let left = vec![Some("test".to_string()), Some("rust".to_string()), None];
+        let right = vec![
+            Some("test".to_string()),
+            Some("rusts".to_string()),
+            Some("wrong".to_string()),
+        ];
+        let max_distance = 1.0;
+        let pool = crate::utils::get_pool(None).unwrap();
+
+        let (indices, distances) = hamming
+            .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices, vec![0]); // Expecting to match indices 0 and 1
+        assert_eq!(distances, vec![0.]); // Expecting two distances
+    }
+
+    #[test]
+    fn test_compare_pairs_empty_strings() {
+        let hamming = Hamming;
+        let left = vec![Some("".to_string())];
+        let right = vec![Some("".to_string())];
+        let max_distance = 0.0;
+        let pool = test_thread_pool();
+
+        let (indices, distances) = hamming
+            .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices, vec![0]); // Expecting match
+        assert_eq!(distances, vec![0.0]); // Distance should be zero
+    }
+
+    #[test]
+    fn test_fuzzy_indices_basic() {
+        let hamming = Hamming;
+        let left = vec![Some("test".to_string()), Some("rust".to_string())];
+        let right = vec![
+            Some("test".to_string()),
+            Some("rusts".to_string()),
+            Some("wrong".to_string()),
+        ];
+        let max_distance = 1.0;
+        let pool = test_thread_pool();
+
+        let indices = hamming
+            .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices.len(), 1);
+    }
+
+    #[test]
+    fn test_fuzzy_indices_with_none() {
+        let hamming = Hamming;
+        let left = vec![Some("test".to_string()), None];
+        let right = vec![Some("test".to_string()), Some("rusts".to_string())];
+        let max_distance = 1.0;
+        let pool = test_thread_pool();
+
+        let indices = hamming
+            .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices.len(), 1); // Should only find one match ignoring None
+    }
+
+    #[test]
+    fn test_compare_one_to_many() {
+        let hamming = Hamming;
+        let k1 = "test";
+        let v1 = vec![0];
+        let length_map: FxHashMap<usize, Vec<&str>> =
+            [(4, vec!["test", "rest"])].iter().cloned().collect();
+        let idx_map: FxHashMap<&str, Vec<usize>> = [("test", vec![0]), ("rest", vec![1])]
+            .iter()
+            .cloned()
+            .collect();
+        let max_distance = 1.0;
+
+        let result = hamming
+            .compare_one_to_many(k1, &v1, &length_map, &idx_map, &max_distance)
+            .unwrap();
+
+        assert_eq!(result, vec![(0, 0, 0.0), (0, 1, 1.0)]);
+    }
+}

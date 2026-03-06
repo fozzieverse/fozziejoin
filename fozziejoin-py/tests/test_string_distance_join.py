@@ -14,22 +14,23 @@ RIGHT_DF = pl.DataFrame({
 })
 
 @pytest.mark.parametrize(
-    "method, max_distance, q, expected_names",
+    "method, max_distance, prefix_weight, max_prefix, q, expected_names",
     [
-        ('jaccard', 0.9, 3, {"JOHN SMITH", "JACK DOE"}),
-        ('hamming', 1, None, {"JOHN SMITH"}),
-        ('levenshtein', 2, None, {"JOHN SMITH"}),
-        ('levenshtein', 3, None, {"JOHN SMITH", "JACK DOE"}),
-        ('dl', 2, None, {"JOHN SMITH"}),
-        ('dl', 3, None, {"JOHN SMITH", "JACK DOE"}),
-        ('osa', 2, None, {"JOHN SMITH"}),
-        ('osa', 3, None, {"JOHN SMITH", "JACK DOE"}),
-        ('lcs', 2, None, {"JOHN SMITH"}),
-        ('cosine', 0.9, 2, {"JOHN SMITH", "JACK DOE"}),
-        ('qgram', 5, 2, {"JOHN SMITH", "JACK DOE"}),
+        ('hamming', 1, None, None, None, {"JOHN SMITH"}),
+        ('levenshtein', 2, None, None, None, {"JOHN SMITH"}),
+        ('levenshtein', 3, None, None, None, {"JOHN SMITH", "JACK DOE"}),
+        ('dl', 2, None, None, None, {"JOHN SMITH"}),
+        ('dl', 3, None, None, None, {"JOHN SMITH", "JACK DOE"}),
+        ('osa', 2, None, None, None, {"JOHN SMITH"}),
+        ('osa', 3, None, None, None, {"JOHN SMITH", "JACK DOE"}),
+        ('lcs', 2, None, None, None, {"JOHN SMITH"}),
+        ('jaccard', 0.9, None, None, 3, {"JOHN SMITH", "JACK DOE"}),
+        ('cosine', 0.9, None, None, 2, {"JOHN SMITH", "JACK DOE"}),
+        ('qgram', 5, None, None, 2, {"JOHN SMITH", "JACK DOE"}),
+        ('jw', 0.5, 0.1, 2, 2, {"JOHN SMITH", "JACK DOE"}),
     ]
 )
-def test_string_join(method, max_distance, q, expected_names):
+def test_string_join(method, max_distance, prefix_weight, max_prefix, q, expected_names):
     """Parameterize the string distance join tests with various configurations."""
     joined = fozziejoin.string_distance_join(
         LEFT_DF, RIGHT_DF,
@@ -38,7 +39,9 @@ def test_string_join(method, max_distance, q, expected_names):
         how='inner',
         method=method,
         max_distance=max_distance,
-        q=q
+        q=q,
+        prefix_weight=prefix_weight,
+        max_prefix=max_prefix
     )
 
     # Assert that the result is a DataFrame

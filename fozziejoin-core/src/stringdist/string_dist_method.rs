@@ -2,6 +2,7 @@ use crate::stringdist::cosine::Cosine;
 use crate::stringdist::damerau_levenshtein::DamerauLevenshtein;
 use crate::stringdist::hamming::Hamming;
 use crate::stringdist::jaccard::Jaccard;
+use crate::stringdist::jaro_winkler::JaroWinkler;
 use crate::stringdist::lcs::LCS;
 use crate::stringdist::levenshtein::Levenshtein;
 use crate::stringdist::osa::OSA;
@@ -41,6 +42,7 @@ pub enum StringDistMethod {
     LCS(LCS),
     Cosine(Cosine),
     QGram(QGram),
+    JaroWinkler(JaroWinkler),
 }
 
 impl StringDistMethod {
@@ -56,6 +58,7 @@ impl StringDistMethod {
             "lcs" => Ok(StringDistMethod::LCS(LCS)),
             "cosine" => Ok(StringDistMethod::Cosine(Cosine)),
             "qgram" => Ok(StringDistMethod::QGram(QGram)),
+            "jw" => Ok(StringDistMethod::JaroWinkler(JaroWinkler)),
             _ => Err(anyhow::anyhow!("Unsupported method `{}`", method)),
         }
     }
@@ -143,6 +146,15 @@ impl StringDistMethod {
                 max_prefix,
                 pool,
             ),
+            StringDistMethod::JaroWinkler(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
         }
     }
 
@@ -221,6 +233,15 @@ impl StringDistMethod {
                 pool,
             ),
             StringDistMethod::QGram(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::JaroWinkler(distance) => distance.compare_pairs(
                 left,
                 right,
                 max_distance,

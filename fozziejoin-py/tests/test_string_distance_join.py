@@ -24,6 +24,7 @@ RIGHT_DF = pl.DataFrame({
         ('dl', 3, None, {"JOHN SMITH", "JACK DOE"}),
         ('osa', 2, None, {"JOHN SMITH"}),
         ('osa', 3, None, {"JOHN SMITH", "JACK DOE"}),
+        ('lcs', 2, None, {"JOHN SMITH", "JOHN SMITH"}),
     ]
 )
 def test_string_join(method, max_distance, q, expected_names):

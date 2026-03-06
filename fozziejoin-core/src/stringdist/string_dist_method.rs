@@ -1,3 +1,4 @@
+use crate::stringdist::damerau_levenshtein::DamerauLevenshtein;
 use crate::stringdist::hamming::Hamming;
 use crate::stringdist::jaccard::Jaccard;
 use crate::stringdist::levenshtein::Levenshtein;
@@ -33,6 +34,7 @@ pub enum StringDistMethod {
     Hamming(Hamming),
     Levenshtein(Levenshtein),
     OSA(OSA),
+    DamerauLevenshtein(DamerauLevenshtein),
 }
 
 impl StringDistMethod {
@@ -40,8 +42,11 @@ impl StringDistMethod {
         match method {
             "jaccard" => Ok(StringDistMethod::Jaccard(Jaccard)),
             "hamming" => Ok(StringDistMethod::Hamming(Hamming)),
-            "levenshtein" => Ok(StringDistMethod::Levenshtein(Levenshtein)),
+            "levenshtein" | "lv" => Ok(StringDistMethod::Levenshtein(Levenshtein)),
             "osa" => Ok(StringDistMethod::OSA(OSA)),
+            "damerau_levenshtein" | "dl" => {
+                Ok(StringDistMethod::DamerauLevenshtein(DamerauLevenshtein))
+            }
             _ => Err(anyhow::anyhow!("Unsupported method `{}`", method)),
         }
     }
@@ -93,6 +98,15 @@ impl StringDistMethod {
                 max_prefix,
                 pool,
             ),
+            StringDistMethod::DamerauLevenshtein(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
         }
     }
 
@@ -135,6 +149,15 @@ impl StringDistMethod {
                 pool,
             ),
             StringDistMethod::OSA(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::DamerauLevenshtein(distance) => distance.compare_pairs(
                 left,
                 right,
                 max_distance,

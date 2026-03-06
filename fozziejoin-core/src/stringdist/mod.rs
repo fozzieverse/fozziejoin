@@ -1,3 +1,4 @@
+mod damerau_levenshtein;
 mod hamming;
 mod jaccard;
 mod levenshtein;

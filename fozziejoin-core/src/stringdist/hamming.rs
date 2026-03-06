@@ -157,11 +157,6 @@ impl Hamming {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rayon::ThreadPoolBuilder;
-
-    fn test_thread_pool() -> rayon::ThreadPool {
-        ThreadPoolBuilder::new().num_threads(4).build().unwrap()
-    }
 
     #[test]
     fn test_compare_pairs_basic() {
@@ -189,7 +184,7 @@ mod tests {
         let left = vec![Some("".to_string())];
         let right = vec![Some("".to_string())];
         let max_distance = 0.0;
-        let pool = test_thread_pool();
+        let pool = crate::utils::get_pool(None).unwrap();
 
         let (indices, distances) = hamming
             .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
@@ -209,7 +204,7 @@ mod tests {
             Some("wrong".to_string()),
         ];
         let max_distance = 1.0;
-        let pool = test_thread_pool();
+        let pool = crate::utils::get_pool(None).unwrap();
 
         let indices = hamming
             .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
@@ -224,7 +219,7 @@ mod tests {
         let left = vec![Some("test".to_string()), None];
         let right = vec![Some("test".to_string()), Some("rusts".to_string())];
         let max_distance = 1.0;
-        let pool = test_thread_pool();
+        let pool = crate::utils::get_pool(None).unwrap();
 
         let indices = hamming
             .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)

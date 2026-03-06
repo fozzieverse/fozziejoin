@@ -147,3 +147,98 @@ impl OSA {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_compare_pairs_basic() {
+        let osa = OSA;
+        let left = vec![Some("test".to_string()), Some("rust".to_string()), None];
+        let right = vec![
+            Some("test".to_string()),
+            Some("rusty".to_string()),
+            Some("wrong".to_string()),
+        ];
+        let max_distance = 1.0;
+        let pool = crate::utils::get_pool(None).unwrap();
+
+        let (indices, distances) = osa
+            .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices, vec![0, 1]); // Should match indices 0 and 1
+        assert_eq!(distances.len(), 2); // Expecting two distances
+    }
+
+    #[test]
+    fn test_compare_pairs_empty_strings() {
+        let osa = OSA;
+        let left = vec![Some("".to_string())];
+        let right = vec![Some("".to_string())];
+        let max_distance = 0.0;
+        let pool = crate::utils::get_pool(None).unwrap();
+
+        let (indices, distances) = osa
+            .compare_pairs(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices, vec![0]); // Expecting match
+        assert_eq!(distances, vec![0.0]); // Distance should be zero
+    }
+
+    #[test]
+    fn test_fuzzy_indices_basic() {
+        let osa = OSA;
+        let left = vec![Some("test".to_string()), Some("rust".to_string())];
+        let right = vec![
+            Some("test".to_string()),
+            Some("rusty".to_string()),
+            Some("wrong".to_string()),
+        ];
+        let max_distance = 1.0;
+        let pool = crate::utils::get_pool(None).unwrap();
+
+        let indices = osa
+            .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices.len(), 2); // Expecting to find two pairs
+                                      // You can make assertions specific to expected pairs
+    }
+
+    #[test]
+    fn test_fuzzy_indices_with_none() {
+        let osa = OSA;
+        let left = vec![Some("test".to_string()), None];
+        let right = vec![Some("test".to_string()), Some("rusty".to_string())];
+        let max_distance = 1.0;
+        let pool = crate::utils::get_pool(None).unwrap();
+
+        let indices = osa
+            .fuzzy_indices(&left, &right, &max_distance, &None, None, None, &pool)
+            .unwrap();
+
+        assert_eq!(indices.len(), 1); // Should only find one match ignoring None
+    }
+
+    #[test]
+    fn test_compare_one_to_many() {
+        let osa = OSA;
+        let k1 = "test";
+        let v1 = vec![0];
+        let length_map: FxHashMap<usize, Vec<&str>> =
+            [(4, vec!["test", "rest"])].iter().cloned().collect();
+        let idx_map: FxHashMap<&str, Vec<usize>> = [("test", vec![0]), ("rest", vec![1])]
+            .iter()
+            .cloned()
+            .collect();
+        let max_distance = 1.0;
+
+        let result = osa
+            .compare_one_to_many(k1, &v1, &length_map, &idx_map, &max_distance)
+            .unwrap();
+
+        assert_eq!(result, vec![(0, 0, 0.0), (0, 1, 1.0)]);
+    }
+}

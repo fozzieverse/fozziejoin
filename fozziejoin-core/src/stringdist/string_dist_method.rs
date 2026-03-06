@@ -1,6 +1,7 @@
 use crate::stringdist::damerau_levenshtein::DamerauLevenshtein;
 use crate::stringdist::hamming::Hamming;
 use crate::stringdist::jaccard::Jaccard;
+use crate::stringdist::lcs::LCS;
 use crate::stringdist::levenshtein::Levenshtein;
 use crate::stringdist::osa::OSA;
 use anyhow::Result;
@@ -35,6 +36,7 @@ pub enum StringDistMethod {
     Levenshtein(Levenshtein),
     OSA(OSA),
     DamerauLevenshtein(DamerauLevenshtein),
+    LCS(LCS),
 }
 
 impl StringDistMethod {
@@ -47,6 +49,7 @@ impl StringDistMethod {
             "damerau_levenshtein" | "dl" => {
                 Ok(StringDistMethod::DamerauLevenshtein(DamerauLevenshtein))
             }
+            "lcs" => Ok(StringDistMethod::LCS(LCS)),
             _ => Err(anyhow::anyhow!("Unsupported method `{}`", method)),
         }
     }
@@ -107,6 +110,15 @@ impl StringDistMethod {
                 max_prefix,
                 pool,
             ),
+            StringDistMethod::LCS(distance) => distance.fuzzy_indices(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
         }
     }
 
@@ -158,6 +170,15 @@ impl StringDistMethod {
                 pool,
             ),
             StringDistMethod::DamerauLevenshtein(distance) => distance.compare_pairs(
+                left,
+                right,
+                max_distance,
+                q,
+                prefix_weight,
+                max_prefix,
+                pool,
+            ),
+            StringDistMethod::LCS(distance) => distance.compare_pairs(
                 left,
                 right,
                 max_distance,

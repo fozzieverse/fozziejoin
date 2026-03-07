@@ -53,13 +53,13 @@ pub fn string_distance_join_polars(
     let mut left_on_iter = left_on.iter();
     let first_left_key = match left_on_iter.next() {
         Some(x) => x.as_str(),
-        None => return Err(anyhow!("You gotta add at least one join pair, bro")),
+        None => return Err(anyhow!("One or more join key pairs must be provided.")),
     };
     // Right
     let mut right_on_iter = right_on.iter();
     let first_right_key: &str = match right_on_iter.next() {
         Some(x) => x.as_str(),
-        None => return Err(anyhow!("You gotta add at least one join pair, bro")),
+        None => return Err(anyhow!("One or more join key pairs must be provided.")),
     };
 
     // Extract string vec from left hand side

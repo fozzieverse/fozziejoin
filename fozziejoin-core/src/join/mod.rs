@@ -1,5 +1,6 @@
 mod inner;
 mod left;
+mod right;
 mod utils;
 
 use anyhow::{anyhow, Result};
@@ -29,6 +30,15 @@ impl FuzzyJoin {
                 suffix,
             ),
             "left" => FuzzyJoin::left(
+                left,
+                right,
+                left_idxs,
+                right_idxs,
+                dists,
+                distance_cols,
+                suffix,
+            ),
+            "right" => FuzzyJoin::right(
                 left,
                 right,
                 left_idxs,

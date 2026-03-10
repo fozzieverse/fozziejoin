@@ -1,4 +1,5 @@
 options(fozzie.nthread = 2)
+Sys.setenv(TZ = "UTC")
 
 # Some tests use the babynames dataset from the babynames R package.
 # Acknowledgment: The babynames package is maintained by Hadley Wickham.

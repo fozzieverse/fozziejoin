@@ -1,7 +1,8 @@
-# fozziejoin 🧸
+# fozziejoin
 
-> ⚠️ **Note**: This is a new R package, not yet on CRAN.
-> Installation requires the Rust toolchain.
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/fozziejoin)](https://CRAN.R-project.org/package=fozziejoin)
+<!-- badges: end -->
 
 `fozziejoin` is an R package that performs fast fuzzy joins using Rust as a
 backend. It is a performance-minded re-imagining of the very popular
@@ -9,7 +10,7 @@ backend. It is a performance-minded re-imagining of the very popular
 Performance improvements relative to `fuzzyjoin` can be significant, especially
 for string distance joins. See the [benchmarks](#Benchmarks) for more details.
 
-Currently, the following function families are available:
+The following function families are available:
 
 - `fozzie_string_join` 
 - `fozzie_difference_join`
@@ -32,14 +33,11 @@ A picture of Fozzie will appear in the repo once the legal team gets braver.
 
 R 4.2 or greater is required for all installations. R 4.5.0 or greater is preferred.
 
-On Linux or to build from source, you will need these additional dependencies:
+When installing from source, you will need these additional dependencies:
 
 - Cargo, the Rust package manager
 - Rustc
 - xz
-
-While note strictly required, many of the installation instructions assume
-`devtools` is installed.
 
 To run the examples in the README or benchmarking scripts, the following are
 required:
@@ -52,40 +50,16 @@ required:
  
 ### Installation
 
-`fozziejoin` is currently under development for a future CRAN release. Until
-CRAN acceptance, installing from source is the only option. An appropriate
-Rust toolchain is required.
-
-#### Linux/MacOS
+From CRAN:
 
 ```r
-devtools::install_github("fozzieverse/fozziejoin/fozziejoin-r")
+install.packages('fozziejoin')
 ```
 
-#### Windows
+To install the latest development version:
 
-To compile Rust extensions for R on Windows (such as those used by `rextendr`),
-you must use the **GNU Rust toolchain**, not MSVC. This is because R is built
-with GCC (via Rtools), and Rust must match that ABI for compatibility.
-This assumes you already have Rust installed.
-
-1. Set the default Rust toolchain to GNU:
-
-```sh
-# Install the GNU toolchain if needed
-# rustup install stable-x86_64-pc-windows-gnu
-
-rustup override set stable-x86_64-pc-windows-gnu
-```
-
-2. Install the latest build from GitHub
-
-```sh
-Rscript -e 'devtools::install_github("fozzieverse/fozziejoin/fozziejoin-r")'
-# Or, clone and install locally
-# git clone https://github.com/fozzieverse/fozziejoin.git
-# cd fozziejoin
-# Rscript.exe -e "devtools::install('./fozziejoin-r')"
+```r
+remotes::install_github("fozzieverse/fozziejoin/fozziejoin-r")
 ```
 
 ### Usage
@@ -155,10 +129,10 @@ address.
     - `useNames` is not relevant to the final output of the fuzzy join. There is no need to implement this.
 
 - For interval joins, we allow for both `real` and `integer` join types!
-    - The integer mode is designed to match the behavior of IRanges, which is used in `fuzzyjoin`. You will need to coerce the join columns to integers to enable this mode.
+    - The integer mode is designed to match the behavior of `IRanges`, which is used in `fuzzyjoin`. You will need to coerce the join columns to integers to enable this mode.
     - The `real` mode behaves more like `data.table`'s `foverlaps`.
     - An `auto` mode (default) will determine the method to use based on the input column type
 
 - `soundex` implementations differ slightly.
-    - Our implementation considers multiple encodings in the case of prefixes prefixes, as is specified in the [National Archives Standard](https://www.archives.gov/research/census/soundex).
+    - Our implementation considers multiple encodings in the case of prefixes, as is specified in the [National Archives Standard](https://www.archives.gov/research/census/soundex).
     - How consecutive similar letters and consonant separators behave is implemented differently. "Coca Cola" would match to "cuckoo" only in our system, while "overshaddowed" and "overwrought" would only match in theirs.

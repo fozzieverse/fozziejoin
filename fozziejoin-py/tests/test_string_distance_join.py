@@ -208,4 +208,46 @@ def test_string_anti_join(method, max_distance, prefix_weight, max_prefix, q, ex
     actual = joined["LEFT_FULL_NAME"].to_list()
     assert Counter(actual) == Counter(expected_names)
 
+@pytest.mark.parametrize(
+    "method, max_distance, prefix_weight, max_prefix, q, expected_names",
+    [
+        ('hamming', 1, None, None, None, ["JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None, None, None]),
+        ('levenshtein', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None, None]),
+        ('levenshtein', 3, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('dl', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None, None]),
+        ('dl', 3, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('osa', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None, None]),
+        ('osa', 3, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('lcs', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None, None]),
+        ('jaccard', 0.9, None, None, 3, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('cosine', 0.9, None, None, 2, ["JOHN SMITH", "JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('qgram', 5, None, None, 2, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+        ('jw', 0.5, 0.1, 2, 2, ["JOHN SMITH", "JOHN SMITH", "JACK DOE", "SILLY BILLY", None, None, None]),
+    ]
+)
+def test_string_full_join(method, max_distance, prefix_weight, max_prefix, q, expected_names):
+    """Parameterize the string distance join tests with various configurations."""
+    joined = fozziejoin.string_distance_join(
+        LEFT_DF, RIGHT_DF,
+        left_on=['LEFT_FULL_NAME'],
+        right_on=['RIGHT_FULL_NAME'],
+        how='full',
+        method=method,
+        max_distance=max_distance,
+        q=q,
+        prefix_weight=prefix_weight,
+        max_prefix=max_prefix
+    )
+
+    # Assert that the result is a DataFrame
+    assert isinstance(joined, pl.DataFrame)
+
+    # Assert expected matches
+    actual = joined["LEFT_FULL_NAME"].to_list()
+    actualctr = Counter(actual)
+    expected_ctr = Counter(expected_names)
+    if not actualctr == expected_ctr:
+        lines = '\n'.join([f"{k}: {v}" for k,v in actualctr.items()])
+        pytest.fail(lines)
+
 

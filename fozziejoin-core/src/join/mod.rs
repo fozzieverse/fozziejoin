@@ -1,4 +1,5 @@
 mod anti;
+mod full;
 mod inner;
 mod left;
 mod right;
@@ -51,6 +52,15 @@ impl FuzzyJoin {
             ),
             "semi" => FuzzyJoin::semi(left, left_idxs),
             "anti" => FuzzyJoin::anti(left, left_idxs),
+            "full" => FuzzyJoin::full(
+                left,
+                right,
+                left_idxs,
+                right_idxs,
+                dists,
+                distance_cols,
+                suffix,
+            ),
             _ => Err(anyhow!("Join type not supported")),
         }
     }

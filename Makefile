@@ -1,6 +1,6 @@
-SUBDIR = ./fozziejoin-r
+RBASEDIR = ./fozziejoin-r
 
-.PHONY: test-py develop-py develop-release-py bench-py
+.PHONY: test-py develop-py develop-release-py bench-py check-rbase test-rbase build-rbase plotbench-rbase
 
 test-py:
 	make -C fozziejoin-py/ test
@@ -14,20 +14,18 @@ develop-release-py:
 bench-py:
 	make -C benchmarks/python benchmark
 
-check-rbase:
-	Rscript -e "devtools::check(pkg = '$(SUBDIR)')"
-
 test-rbase:
-	Rscript -e "devtools::test(pkg = '$(SUBDIR)')"
+	Rscript -e "devtools::test(pkg = '$(RBASEDIR)')"
 
 build-rbase:
-	cd builds && R CMD build ../fozziejoin-r
+	cd builds && R CMD build ../$(RBASEDIR)
 
-check-rbase:
-	cd builds && R CMD check $(FILENAME) --as-cran
-	Rscript -e "devtools::check_win_devel('./fozziejoin-r')"
-	Rscript -e "devtools::check_win_release('./fozziejoin-r')"
-	Rscript -e "devtools::check_mac_release('./fozziejoin-r')"
+check-rbase: build-rbase
+	Rscript -e "devtools::check(pkg = '$(RBASEDIR)')"
+	Rscript -e "devtools::check_win_devel('$(RBASEDIR)')"
+	Rscript -e "devtools::check_win_release('$(RBASEDIR)')"
+	Rscript -e "devtools::check_mac_release('$(RBASEDIR)')"
 
 plotbench-rbase:
 	make -C benchmarks/r plotbench
+

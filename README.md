@@ -29,6 +29,7 @@ A picture of Fozzie will appear in the repo once the legal team gets braver.
 - The `textdistance` Rust crate. While not used in the current implementation, its algorithms were referenced early on and adapted for our purposes. Such instances are acknowledged in various places, including the relevant source code.
 - The `rapidfuzz` Rust crate. When available, we tend to use `rapidfuzz` string distance algorithms due to its stellar performance.
 - The `rayon` Rust crate, which enables efficient parallel data processing.
+- The Washington State Department of Health and Sean Coffinger. WA DOH and Sean graciously gave time for the development and promotion of this project.
 
 ## Contributions Welcome
 

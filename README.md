@@ -6,9 +6,9 @@ inspired by the
 [`fuzzyjoin` package]( https://CRAN.R-project.org/package=fuzzyjoin)
 R package.
 
-Currently, the base R version of `fozziejoin` is the most developed. Our
-priority is to get this package published to CRAN. Future work will adapt
-the core functionality for use with `polars` dataframes in both R and Python.
+Currently, the base R version of `fozziejoin` is the most developed. It
+was published on CRAN in March 2026. Future work will adapt the core
+functionality for use with `polars` dataframes in both R and Python.
 
 The name is a playful nod to “fuzzy join” — reminiscent of 
 [Fozzie Bear](https://en.wikipedia.org/wiki/Fozzie_Bear) from the Muppets.

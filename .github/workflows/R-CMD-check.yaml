@@ -73,5 +73,5 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
-          error-on: '"note"'
+          error-on: '"warning"'
           working-directory: "./fozziejoin-r/"

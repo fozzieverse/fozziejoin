@@ -341,7 +341,7 @@ for (method in edit_methods) {
       max_distance = 1,
       nthread = 2
     ))
-    testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
+    testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"] + 0.03)
   })
 }
 

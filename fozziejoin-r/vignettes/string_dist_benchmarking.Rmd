@@ -183,7 +183,7 @@ while functions like `difference_join()` remain single-threaded.
 
 As a result, `fozziejoin`'s relative performance advantage tends to increase
 with the number of available threads — especially on large datasets. Performance
-tends to be slightly worse on Windows than Unix systems due to the relatively
+tends to be slightly worse on Windows than Unix systems due to the relative
 efficiency of multithreading via `rayon`.
 
 #### Smart Search strategies

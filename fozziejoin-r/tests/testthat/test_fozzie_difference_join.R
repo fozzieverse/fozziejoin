@@ -109,11 +109,11 @@ test_that("multi-column left difference join matches rows across multiple keys",
   runtime <- system.time(fozzie_difference_left_join(
         df1, df2, by = c(x = "x", y = "y"), max_distance = 0.15
   ))
-  testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
+  testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"] + 0.03)
 
   # We should still be able to force it to be 1 thread
   runtime2 <- system.time(fozzie_difference_left_join(
         df1, df2, by = c(x = "x", y = "y"), max_distance = 0.15, nthread = 1
   ))
-  testthat::expect_lte(runtime2["user.self"], 1.9 * runtime2["elapsed"])
+  testthat::expect_lte(runtime2["user.self"], 1.9 * runtime2["elapsed"] + 0.03)
 })

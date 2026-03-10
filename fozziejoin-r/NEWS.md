@@ -1,3 +1,11 @@
+# fozziejoin 0.1.0 (In Development)
+
+- README updates to reflect the availability of `fozziejoin` on CRAN.
+- Corrected typo in benchmarking vignette.
+- Unit tests now assume `tz=UTC` for all checks to fix CI/CD errors.
+- Revised unit tests meant to confirm the `nthread` argument. Tests were modified to include a 0.03 second tolerance. This is designed to prevent false positives that occur intermittently in some builds.
+
+
 # fozziejoin 0.0.13
 
 - The functions `fozzie_difference_join_rs`, `fozzie_distance_join_rs`, `fozzie_interval_join_rs`, `fozzie_regex_join_rs`, and `fozzie_string_join_rs` functions are no longer exported and their `.Rd` documentation files have been removed.

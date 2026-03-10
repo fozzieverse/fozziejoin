@@ -2,9 +2,6 @@ name: Benchmark fozziejoin
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'main' 
 jobs:
   benchmark:
     runs-on: ubuntu-latest

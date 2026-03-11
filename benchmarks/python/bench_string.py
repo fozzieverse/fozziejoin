@@ -74,9 +74,9 @@ if __name__ == '__main__':
     pds_to_fozzie = pds_mean / fozzie_mean
 
     # Print
-    print(f"Average pld join_where time: {pld_mean:.2f}")
-    print(f"Average pld join_where time: {pds_mean:.2f}")
-    print(f"Average fozziejoin time: {fozzie_mean:.2f}")
+    print(f"Average pld join_where time: {pld_mean:.3f}")
+    print(f"Average pld join_where time: {pds_mean:.3f}")
+    print(f"Average fozziejoin time: {fozzie_mean:.3f}")
     print(f"Polars distance / fozzie: {pld_to_fozzie:.2f}")
     print(f"Polars data science / fozzie: {pds_to_fozzie:.2f}")
 

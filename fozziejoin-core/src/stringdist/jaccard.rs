@@ -55,11 +55,13 @@ impl StringDistance for Jaccard {
         };
 
         // Build RHS q-gram reverse index
+        let mut rhs_max_qgrams: usize = 0;
         let mut rhs_index: FxHashMap<usize, FxHashMap<&str, Vec<usize>>> = FxHashMap::default();
         right.iter().enumerate().for_each(|(i, x)| {
             if let Some(ref x_str) = x {
                 let grams = get_qgram_set(x_str, *q);
                 let grams_len = grams.len();
+                rhs_max_qgrams = rhs_max_qgrams.max(grams_len);
                 let map = rhs_index
                     .entry(grams_len)
                     .or_insert_with(FxHashMap::default);
@@ -80,11 +82,12 @@ impl StringDistance for Jaccard {
                     };
                     let lhs_len = left_grams.len();
 
-                    if lhs_len == 0 {
+                    if (lhs_len == 0) & (max_distance.lt(&1.0)) {
                         return None; // Skip empty q-grams
                     }
 
-                    let max_q = ((lhs_len as f64) / (1.0 - max_distance)).ceil() as usize;
+                    let mut max_q = ((lhs_len as f64) / (1.0 - max_distance)).ceil() as usize;
+                    max_q = max_q.min(rhs_max_qgrams);
                     let min_q = std::cmp::max(
                         1,
                         lhs_len.saturating_sub((lhs_len as f64 * max_distance).floor() as usize),
@@ -100,8 +103,18 @@ impl StringDistance for Jaccard {
 
                         let mut candidates: FxHashMap<usize, usize> = FxHashMap::default();
 
-                        for qgram in &left_grams {
-                            if let Some(matches) = rhs_qgram_idxs.get(qgram) {
+                        if max_distance.lt(&1.0) {
+                            // Can only include those with 1+ matches
+                            for qgram in &left_grams {
+                                if let Some(matches) = rhs_qgram_idxs.get(qgram) {
+                                    for &matched_idx in matches {
+                                        *candidates.entry(matched_idx).or_insert(0) += 1;
+                                    }
+                                }
+                            }
+                        } else {
+                            // Must return all matches, because max possible distance specified
+                            for matches in rhs_qgram_idxs.values() {
                                 for &matched_idx in matches {
                                     *candidates.entry(matched_idx).or_insert(0) += 1;
                                 }

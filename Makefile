@@ -20,7 +20,10 @@ test-rbase:
 build-rbase:
 	cd builds && R CMD build ../$(RBASEDIR)
 
-check-rbase: build-rbase
+check-rbase:
+	cd builds && R CMD check $(FILENAME) --as-cran
+
+check-osbuilds-rbase:
 	Rscript -e "devtools::check(pkg = '$(RBASEDIR)')"
 	Rscript -e "devtools::check_win_devel('$(RBASEDIR)')"
 	Rscript -e "devtools::check_win_release('$(RBASEDIR)')"

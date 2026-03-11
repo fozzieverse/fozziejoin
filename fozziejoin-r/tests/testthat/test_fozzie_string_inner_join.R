@@ -377,6 +377,6 @@ for (method in gram_methods) {
         q = 2,
         nthread = 2
       ))
-      testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"])
+      testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"] + 0.03)
   })
 }

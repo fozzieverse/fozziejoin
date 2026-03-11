@@ -13,22 +13,21 @@ for (file in files) {
     all <- rbind(all, df)
 }
 
-forplot <- all[all$method %in% c('difference', 'interval', 'distance', 'cosine'), ]
+forplot <- all[all$method %in% c('difference', 'interval', 'distance', 'jaccard'), ]
 forplot$time <- forplot$time / 1e9
 forplot$n_comps <- forplot$n_comps / 1e6
 forplot$n_comps <- factor(sprintf("%.2f", as.numeric(as.character(forplot$n_comps))),
                      levels = unique(sprintf("%.2f", sort(as.numeric(as.character(forplot$n_comps))))))
-forplot[forplot$method == 'cosine', 'method'] <- "cosine (string distance)"
-
+forplot[forplot$method == 'jaccard', 'method'] <- "jaccard (string distance)"
 
 myplot <- ggplot(forplot, aes(x = factor(n_comps), y = time, fill = expr)) +
   geom_bar(stat = "summary", fun = mean, position = position_dodge(width = 0.75), width = 0.6) +
   facet_wrap(~ method, scales = "free") +
   labs(
     title = "Benchmarks of fozziejoin vs. fuzzyjoin runtime by select join methods",
-    subtitle = "Note: Total comparisons = df1 × df2, but fozziejoin avoids full pairwise evaluation",
+    subtitle = "Note: Total possible comparisons = df1 × df2",
     caption = "* Fozziejoin uses optimized algorithms to reduce unnecessary comparisons",
-    x = "Total Comparisons (millions)*",
+    x = "Total Possible Comparisons (millions)*",
     y = "Time (seconds)",
     fill = "Expression"
   ) +

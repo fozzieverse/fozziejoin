@@ -226,6 +226,26 @@ testthat::test_that("Inner join is correct for Jaccard", {
   testthat::expect_true(all.equal(actual, expected))
 })
 
+testthat::test_that("Inner join is correct for Jaccard at max distance", {
+  # Max distance case
+  expected <- make_expected(
+    rep(1, 10),
+    na.omit(whoops$Name)
+  )
+  expected$Name.y <- c(expected$Name.y)
+
+  actual <- fozzie_string_join(
+    test_df[1:1, ],
+    whoops,
+    by = list("Name" = "Name"),
+    method = "jaccard",
+    max_distance = 1.0,
+    q = 3,
+    nthread = 2
+  )
+  testthat::expect_true(all.equal(actual, expected))
+})
+
 
 # Jaro-Winkler
 testthat::test_that("Inner join is correct for Jaro-Winkler", {

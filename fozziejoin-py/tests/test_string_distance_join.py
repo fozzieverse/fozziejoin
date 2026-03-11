@@ -25,6 +25,7 @@ RIGHT_DF = pl.DataFrame({
         ('osa', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH"]),
         ('osa', 3, None, None, None, ["JOHN SMITH", "JOHN SMITH", "JACK DOE"]),
         ('lcs', 2, None, None, None, ["JOHN SMITH", "JOHN SMITH"]),
+        ('jaccard', 1.0, None, None, 3, ['JOHN SMITH', 'JOHN SMITH', 'JOHN SMITH', 'JOHN SMITH', 'JACK DOE', 'JACK DOE', 'JACK DOE', 'JACK DOE', 'SILLY BILLY', 'SILLY BILLY', 'SILLY BILLY', 'SILLY BILLY']),
         ('jaccard', 0.9, None, None, 3, ["JOHN SMITH", "JOHN SMITH", "JACK DOE"]),
         ('cosine', 0.9, None, None, 2, ["JOHN SMITH", "JOHN SMITH", "JOHN SMITH", "JACK DOE"]),
         ('qgram', 5, None, None, 2, ["JOHN SMITH", "JOHN SMITH", "JACK DOE"]),

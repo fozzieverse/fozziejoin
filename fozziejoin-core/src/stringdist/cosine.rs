@@ -2,9 +2,9 @@
 // Source: https://docs.rs/textdistance/latest/textdistance/
 // License: MIT
 
-use crate::stringdist::get_qgrams;
 use crate::stringdist::string_dist_method::StringDistance;
-use crate::stringdist::strvec_to_qgram_map;
+use crate::stringdist::utils::get_qgrams;
+use crate::stringdist::utils::strvec_to_qgram_map;
 use anyhow::Result;
 use itertools::iproduct;
 use rayon::prelude::*;

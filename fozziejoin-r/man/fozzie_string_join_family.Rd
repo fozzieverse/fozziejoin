@@ -154,18 +154,6 @@ Rayon, the multithreading library used throughout the package.}
 \value{
 A data frame with fuzzy-matched rows depending on the join type. See individual functions like \code{fozzie_string_inner_join()} for examples.
 If \code{distance_col} is specified, an additional numeric column is included.
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
-
-See \code{\link[=fozzie_string_join]{fozzie_string_join()}}
 }
 \description{
 \code{fozzie_string_join()} and its directional variants (\code{fozzie_string_inner_join()}, \code{fozzie_string_left_join()}, \code{fozzie_string_right_join()}, \code{fozzie_string_anti_join()}, \code{fozzie_string_full_join()})

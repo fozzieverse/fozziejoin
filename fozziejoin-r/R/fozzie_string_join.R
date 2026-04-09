@@ -77,7 +77,6 @@ fozzie_string_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_inner_join <- function(
     df1, df2, by = NULL,
@@ -102,7 +101,6 @@ fozzie_string_inner_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_left_join <- function(
     df1, df2, by = NULL,
@@ -127,7 +125,6 @@ fozzie_string_left_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_right_join <- function(
     df1, df2, by = NULL,
@@ -152,7 +149,6 @@ fozzie_string_right_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_anti_join <- function(
     df1, df2, by = NULL,
@@ -177,7 +173,6 @@ fozzie_string_anti_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_full_join <- function(
     df1, df2, by = NULL,
@@ -202,7 +197,6 @@ fozzie_string_full_join <- function(
 }
 
 #' @rdname fozzie_string_join_family
-#' @return See [fozzie_string_join()]
 #' @export
 fozzie_string_semi_join <- function(
     df1, df2, by = NULL,

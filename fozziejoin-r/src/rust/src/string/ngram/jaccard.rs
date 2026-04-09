@@ -180,7 +180,7 @@ impl QGramDistance for Jaccard {
                         let mut candidates: FxHashMap<usize, usize> = FxHashMap::default();
 
                         if max_distance.lt(&1.0) {
-                            // Can only include those with 1+ matches
+                            // Only include those with 1+ matches: for each left qgram, add matches (no-op if none)
                             for qgram in &left_grams {
                                 if let Some(matches) = rhs_qgram_idxs.get(qgram) {
                                     for &matched_idx in matches {
@@ -189,10 +189,18 @@ impl QGramDistance for Jaccard {
                                 }
                             }
                         } else {
-                            // Must return all matches, because max possible distance specified
-                            for matches in rhs_qgram_idxs.values() {
-                                for &matched_idx in matches {
-                                    *candidates.entry(matched_idx).or_insert(0) += 1;
+                            // Must return all matches: iterate all right qgrams; for each right qgram,
+                            // if there's no corresponding left qgram, insert zero for each right index.
+                            for (right_qgram, matches) in rhs_qgram_idxs {
+                                if left_grams.contains(right_qgram) {
+                                    for &matched_idx in matches {
+                                        *candidates.entry(matched_idx).or_insert(0) += 1;
+                                    }
+                                } else {
+                                    for &matched_idx in matches {
+                                        // Insert 0 when left qgram not found for this right qgram
+                                        candidates.entry(matched_idx).or_insert(0);
+                                    }
                                 }
                             }
                         }

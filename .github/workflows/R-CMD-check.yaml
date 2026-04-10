@@ -1,13 +1,9 @@
 # Adapted from rextendr yaml file
 on:
   push:
-    branches: [main]
-    paths:
-      - 'fozziejoin-r/**'
+    branches: [base_r_only]
   pull_request:
     branches: [main]
-    paths:
-      - 'fozziejoin-r/**'
     types:
       - opened
       - reopened
@@ -78,4 +74,3 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           error-on: '"warning"'
-          working-directory: "./fozziejoin-r/"

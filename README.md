@@ -59,7 +59,7 @@ install.packages('fozziejoin')
 To install the latest development version:
 
 ```r
-remotes::install_github("fozzieverse/fozziejoin/fozziejoin-r")
+remotes::install_github("fozzieverse/fozziejoin")
 ```
 
 ### Usage
@@ -135,7 +135,9 @@ address.
 
 - `soundex` implementations differ slightly.
     - Our implementation considers multiple encodings in the case of prefixes, as is specified in the [National Archives Standard](https://www.archives.gov/research/census/soundex).
-    - How consecutive similar letters and consonant separators behave is implemented differently. "Coca Cola" would match to "cuckoo" only in our system, while "overshaddowed" and "overwrought" would only match in theirs.## Acknowledgements
+    - How consecutive similar letters and consonant separators behave is implemented differently. "Coca Cola" would match to "cuckoo" only in our system, while "overshaddowed" and "overwrought" would only match in theirs.
+
+## Acknowledgements
 
 - The `extendr` team. This project would not be possible without their great project. Specific shoutout to Alberson Miranda, Josiah Parry, and KB Vernon for providing feedback during the CRAN submission process.
 - The `fuzzyjoin` R package. Much of the project is meant to replicate their APIs and special cases handling.
@@ -144,16 +146,3 @@ address.
 - The `rapidfuzz` Rust crate. When available, we tend to use `rapidfuzz` string distance algorithms due to its stellar performance.
 - The `rayon` Rust crate, which enables efficient parallel data processing.
 - The Washington State Department of Health and Sean Coffinger. WA DOH and Sean graciously gave time for the development and promotion of this project.
-
-## Contributions Welcome
-
-We welcome contributions of all kinds- whether it's improving documentation,
-reporting issues, or submitting pull requests. Your input helps make this 
-project better for everyone.
-
-This project follows the [Contributor Covenant](./CODE_OF_CONDUCT.md). By
-participating, you agree to uphold its standards of respectful and inclusive
-behavior.
-
-If you experience or witness any problematic behavior, please [contact me via
-GitHub](https://github.com/JonDDowns).

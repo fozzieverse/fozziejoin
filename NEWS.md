@@ -1,12 +1,12 @@
 # fozziejoin 0.0.14
 
-- Jaccard distance join performance improved by sorting qgrams into HashMaps keyed by total number of qgrams. This allows us to safely ignore any cases where Jaccard distance would be over threshold based solely on the size of the q-grams on left and right sides.
+- Jaccard distance join performance improved by sorting qgrams into HashMaps keyed by total number of qgrams. This allows us to safely ignore any cases where Jaccard distance would be over threshold based solely on the size of the q-grams on left and right sides. Special handling for `max_distance=1.0` required.
 - Unit tests added to confirm Jaccard distance works properly at `max_distance=1.0`.
 - README updates to reflect the availability of `fozziejoin` on CRAN.
 - Corrected typo in benchmarking vignette.
 - Unit tests now assume `tz=UTC` for all checks to fix CI/CD errors.
 - Revised unit tests meant to confirm the `nthread` argument. Tests were modified to include a 0.03 second tolerance. This is designed to prevent false positives that occur intermittently in some builds.
-- Migrated repository layout: we removed the monorepo structure used for other fozziejoin projects (e.g., the Python package). This is an internal reorganization and should not affect downstream users.
+- Migrated repository layout: we removed the monorepo structure used for other `fozziejoin` projects (e.g., the Python package). This is an internal reorganization and should not affect downstream users.
 
 # fozziejoin 0.0.13
 

@@ -107,7 +107,7 @@ For reproducibility, benchmarks are made using a GitHub workflow: see
 for the workflow spec. Linux users will observe the largest performance gains,
 presumably due to the relative efficiency of parallelization via `rayon`.
 
-[![Fozziejoin vs. fuzzyjoin runtime on select join methods](https://raw.githubusercontent.com/fozzieverse/fozziejoin/fec7f14a33b3aa1c9ffbc9e9f8898cdfe4492eb8/benchmarks/results/rbase_bench_plot.png)](https://raw.githubusercontent.com/fozzieverse/fozziejoin/fec7f14a33b3aa1c9ffbc9e9f8898cdfe4492eb8/benchmarks/results/rbase_bench_plot.png)
+![Fozziejoin vs. fuzzyjoin runtime on select join methods](https://github.com/fozzieverse/fozziejoin/blob/main/benchmarks/results/rbase_bench_plot.png)
 
 ## Known behavior changes relative to `fuzzyjoin`
 

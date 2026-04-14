@@ -20,5 +20,5 @@ check-osbuilds:
 	Rscript -e "devtools::check_mac_release()"
 
 plotbench:
-	make -C benchmarks/r plotbench
+	make -C benchmarks plotbench
 

@@ -1,10 +1,10 @@
 library(ggplot2)
 
 files <- list(
-    "difference" = "../results/rbase_difference_benchmark.csv",
-    "distance" = "../results/rbase_distance_benchmark.csv",
-    "interval" = "../results/rbase_interval_benchmark.csv",
-    "string" = "../results/rbase_string_benchmark.csv"
+    "difference" = "./results/rbase_difference_benchmark.csv",
+    "distance" = "./results/rbase_distance_benchmark.csv",
+    "interval" = "./results/rbase_interval_benchmark.csv",
+    "string" = "./results/rbase_string_benchmark.csv"
 )
 
 all <- data.frame()
@@ -43,4 +43,4 @@ myplot <- ggplot(forplot, aes(x = factor(n_comps), y = time, fill = expr)) +
   ) +
  scale_fill_brewer(palette = "Set1") +
  scale_y_continuous(labels = scales::label_number(accuracy = 0.1))
-ggsave("../results/rbase_bench_plot.png", width = 10, height = 6)
+ggsave("./results/rbase_bench_plot.png", width = 10, height = 6)

@@ -6,7 +6,8 @@
 ^cran-comments\.md$
 ^LICENSE\.md$
 ^scripts$
-^outputs$
+^benchmarks$
+^builds$
 ^revdep$
 ^\.github$
 ^img
@@ -17,3 +18,4 @@
 ^fozziejoin-tests$
 ^doc$
 ^Meta$
+^Makefile$

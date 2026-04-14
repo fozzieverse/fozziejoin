@@ -1,7 +1,0 @@
-[workspace]
-resolver = '2'
-members = [
-    "fozziejoin-core",
-    "fozziejoin-py",
-]
-

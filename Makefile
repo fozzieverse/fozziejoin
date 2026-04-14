@@ -1,34 +1,24 @@
-RBASEDIR = ./fozziejoin-r
+.PHONY: check test build plotbench check-osbuilds
 
-.PHONY: test-py develop-py develop-release-py bench-py check-rbase test-rbase build-rbase plotbench-rbase
+PKG := fozziejoin
+VERSION := $(shell awk -F': *' '/^Version:/ { print $$2; exit }' DESCRIPTION | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+TARBALL := $(PKG)_$(VERSION).tar.gz
 
-test-py:
-	make -C fozziejoin-py/ test
+test:
+	Rscript -e "devtools::test()"
 
-develop-py:
-	make -C fozziejoin-py/ develop
+build:
+	cd builds && R CMD build ../
 
-develop-release-py:
-	make -C fozziejoin-py/ develop-release
+check:
+	cd builds && R CMD check $(TARBALL) --as-cran
 
-bench-py:
-	make -C benchmarks/python benchmark
+check-osbuilds:
+	Rscript -e "devtools::check()"
+	Rscript -e "devtools::check_win_devel()"
+	Rscript -e "devtools::check_win_release()"
+	Rscript -e "devtools::check_mac_release()"
 
-test-rbase:
-	Rscript -e "devtools::test(pkg = '$(RBASEDIR)')"
-
-build-rbase:
-	cd builds && R CMD build ../$(RBASEDIR)
-
-check-rbase:
-	cd builds && R CMD check $(FILENAME) --as-cran
-
-check-osbuilds-rbase:
-	Rscript -e "devtools::check(pkg = '$(RBASEDIR)')"
-	Rscript -e "devtools::check_win_devel('$(RBASEDIR)')"
-	Rscript -e "devtools::check_win_release('$(RBASEDIR)')"
-	Rscript -e "devtools::check_mac_release('$(RBASEDIR)')"
-
-plotbench-rbase:
+plotbench:
 	make -C benchmarks/r plotbench
 

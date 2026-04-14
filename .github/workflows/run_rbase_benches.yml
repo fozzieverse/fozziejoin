@@ -23,19 +23,19 @@ jobs:
       - name: Install R dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with:
-            extra-packages: any::remotes, any::tibble, any::fuzzyjoin, any::qdapDictionaries, any::microbenchmark, any::IRanges, local::./fozziejoin-r
+            extra-packages: any::remotes, any::tibble, any::fuzzyjoin, any::qdapDictionaries, any::microbenchmark, any::IRanges, local::.
 
       - name: Run difference benchmarks
-        run: Rscript benchmarks/r/difference_benchmark.R
+        run: Rscript benchmarks/difference_benchmark.R
 
       - name: Run distance benchmarks
-        run: Rscript benchmarks/r/distance_benchmark.R
+        run: Rscript benchmarks/distance_benchmark.R
 
       - name: Run interval benchmarks
-        run: Rscript benchmarks/r/interval_benchmark.R
+        run: Rscript benchmarks/interval_benchmark.R
 
       - name: Run string benchmarks
-        run: Rscript benchmarks/r/string_benchmark.R
+        run: Rscript benchmarks/string_benchmark.R
 
       - name: Upload string benchmark
         uses: actions/upload-artifact@v4

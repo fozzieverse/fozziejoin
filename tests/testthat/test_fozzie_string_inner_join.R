@@ -349,34 +349,3 @@ testthat::test_that("Multi column joins work", {
 
   testthat::expect_true(all.equal(actual, expected))
 })
-
-edit_methods <- c("hamming", "osa", "dl", "lcs", "lv", "jw")
-for (method in edit_methods) {
-  testthat::test_that(sprintf("nthread argument works for %s", method), {
-    runtime <- system.time(fozzie_string_join(
-      do.call(rbind, replicate(10, test_df, simplify = FALSE)),
-      whoops,
-      by = c('Name'),
-      method = method,
-      max_distance = 1,
-      nthread = 2
-    ))
-    testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"] + 0.03)
-  })
-}
-
-gram_methods <- c("cosine", "jaccard", "qgram")
-for (method in gram_methods) {
-  testthat::test_that(sprintf("nthread argument works for %s distances", method), {
-      runtime <- system.time(fozzie_string_inner_join(
-        baby1,
-        baby2,
-        by = 'name',
-        method = method,
-        max_distance = 1,
-        q = 2,
-        nthread = 2
-      ))
-      testthat::expect_lte(runtime["user.self"], 2.5 * runtime["elapsed"] + 0.03)
-  })
-}

@@ -5,8 +5,9 @@
 - README updates to reflect the availability of `fozziejoin` on CRAN.
 - Corrected typo in benchmarking vignette.
 - Unit tests now assume `tz=UTC` for all checks to fix CI/CD errors.
-- Revised unit tests meant to confirm the `nthread` argument. Tests were modified to include a 0.03 second tolerance. This is designed to prevent false positives that occur intermittently in some builds.
+- Removed unit tests meant to confirm the `nthread` argument. The underlying assumption of these tests is that all tests use two threads, so the elapsed time must be <= 2.5x user time. However, the tests intermittently fail, even after adding some tolerance. Currently, all indications are that the `nthread` argument is working properly.
 - Migrated repository layout: we removed the monorepo structure used for other `fozziejoin` projects (e.g., the Python package). This is an internal reorganization and should not affect downstream users.
+- Updated to `extendr-api` version 0.8.2, which supports Windows ARM64 and unconditionally passes the correct `--target` on Windows. Thank you to [Jeroen Ooms](https://github.com/jeroen) for the contribution. 
 
 # fozziejoin 0.0.13
 

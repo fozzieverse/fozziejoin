@@ -31,7 +31,7 @@ pub fn dispatch_join(
 
 /// Combine two Robj vectors of the same type into one.
 /// Preserves all attributes from `a`, including class, levels, label, etc.
-pub fn combine_robj(a: &Robj, b: &Robj) -> Result<Robj> {
+pub fn combine_robj(a: &Robj, b: &Robj) -> Result<Robj, Error> {
     // Ensure both inputs are of the same R type
     if a.rtype() != b.rtype() {
         return Err(Error::Other("Cannot combine: mismatched types".to_string()));

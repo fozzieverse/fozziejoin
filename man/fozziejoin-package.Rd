@@ -19,6 +19,11 @@ Useful links:
 \author{
 \strong{Maintainer}: Jon Downs \email{jon@jondowns.net}
 
+Authors:
+\itemize{
+  \item Jon Downs \email{jon@jondowns.net}
+}
+
 Other contributors:
 \itemize{
   \item The authors of the dependency Rust crates (see inst/AUTHORS file for details) [contributor, copyright holder]

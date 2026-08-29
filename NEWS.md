@@ -1,6 +1,7 @@
 # fozziejoin 0.0.15
 
 - Updated the `extendr` Rust crate to version 0.9.0. This addresses the following note that appears during CRAN package checks: Found non-API call to R: ‘R_NamespaceRegistry’.
+- Updated ROxygen version
 
 # fozziejoin 0.0.14
 

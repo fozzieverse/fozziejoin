@@ -1,3 +1,7 @@
+# fozziejoin 0.0.15
+
+- Updated the `extendr` Rust crate to version 0.9.0. This addresses the following note that appears during CRAN package checks: Found non-API call to R: ‘R_NamespaceRegistry’.
+
 # fozziejoin 0.0.14
 
 - Jaccard distance join performance improved by sorting qgrams into HashMaps keyed by total number of qgrams. This allows us to safely ignore any cases where Jaccard distance would be over threshold based solely on the size of the q-grams on left and right sides. Special handling for `max_distance=1.0` required.

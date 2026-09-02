@@ -39,6 +39,10 @@ To demonstrate string matching, we use the `babynames` dataset. We randomly
 sample 10 names and introduce a single-character mutation to simulate noisy
 input. 
 
+```{r, echo=FALSE}
+options(fozzie.nthread = 2)
+```
+
 ```{r}
 library(babynames)
 library(fozziejoin)

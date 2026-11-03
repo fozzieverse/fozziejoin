@@ -1,6 +1,5 @@
 use crate::utils::any_numeric_to_vec64;
 use anyhow::{anyhow, Result};
-use core::f64;
 use extendr_api::prelude::*;
 use rayon::prelude::*;
 use rayon::ThreadPool;

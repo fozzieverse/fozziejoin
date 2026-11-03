@@ -1,3 +1,8 @@
+# fozziejoin 0.0.17
+
+- Adding [Jeroen Ooms](https://github.com/jeroen) as a contributor for his contributions to v0.0.14
+- It is no longer necessary to import `core::f64::EPSILON` or `std::f64::EPSILON`. See [Rust std crate documentation](https://doc.rust-lang.org/std/f64/constant.EPSILON.html). This addresses a warning that showed up in some Fedora and M1mac builds.
+
 # fozziejoin 0.0.16
 
 - Code within vignettes now run with at most two threads.
